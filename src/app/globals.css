@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg: #F8F7FF;
+  --surface: #FFFFFF;
+  --border: #E8E6F0;
+
+  --indigo: #5B5BD6;
+  --indigo-light: #EDEDFF;
+  --indigo-dark: #3D3D9E;
+
+  --amber: #F59E0B;
+  --amber-light: #FEF3C7;
+
+  --coral: #F87171;
+  --coral-light: #FEE2E2;
+
+  --mint: #34D399;
+  --mint-light: #D1FAE5;
+
+  --sky: #38BDF8;
+  --sky-light: #E0F2FE;
+
+  --text: #1C1917;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+.float { animation: floatUp 3s ease-in-out infinite; }
