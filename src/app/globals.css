@@ -1,45 +1,76 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
-:root {
-  --bg: #F8F7FF;
-  --surface: #FFFFFF;
-  --border: #E8E6F0;
+/* Vở ô li & mực tím: giấy kẻ ô, mực tím học trò, bút đỏ cô chấm */
+@theme {
+  --color-paper: #FBFCFF;
+  --color-grid: #D6D0F5;
+  --color-ink: #4B2BB8;
+  --color-ink-deep: #2A1673;
+  --color-pen: #E8392F;
+  --color-sun: #FFC93C;
+  --color-leaf: #1F9A5B;
+  --color-sky: #2A7FD4;
+  --color-graphite: #2B2A33;
+  --color-pencil: #5E5B72;
 
-  --indigo: #5B5BD6;
-  --indigo-light: #EDEDFF;
-  --indigo-dark: #3D3D9E;
-
-  --amber: #F59E0B;
-  --amber-light: #FEF3C7;
-
-  --coral: #F87171;
-  --coral-light: #FEE2E2;
-
-  --mint: #34D399;
-  --mint-light: #D1FAE5;
-
-  --sky: #38BDF8;
-  --sky-light: #E0F2FE;
-
-  --text: #1C1917;
-  --text-secondary: #6B7280;
-  --text-muted: #9CA3AF;
+  /* Nhãn "?" nhún nhẹ chờ bé trả lời. Dùng thuộc tính translate để không đè transform 3D */
+  --animate-bob: bob 2.4s ease-in-out infinite;
+  @keyframes bob {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -8px; }
+  }
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-html, body {
-  width: 100%;
-  min-height: 100vh;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Nunito', sans-serif;
-  -webkit-font-smoothing: antialiased;
+@theme inline {
+  --font-display: var(--font-baloo), ui-rounded, system-ui, sans-serif;
+  --font-sans: var(--font-bevn), system-ui, sans-serif;
 }
 
-@keyframes floatUp {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-10px); }
+@layer base {
+  html {
+    @apply bg-paper font-sans text-graphite antialiased;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-sun);
+    outline-offset: 3px;
+  }
 }
-.float { animation: floatUp 3s ease-in-out infinite; }
+
+/* Giấy vở ô li: dòng kẻ đậm mỗi 48px, ô li nhỏ 12px, đường dọc 48px */
+@utility bg-oli {
+  background-color: var(--color-paper);
+  background-image:
+    linear-gradient(to bottom, rgb(75 43 184 / 0.2) 1.5px, transparent 1.5px),
+    linear-gradient(to right, rgb(75 43 184 / 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(75 43 184 / 0.07) 1px, transparent 1px);
+  background-size: 100% 48px, 48px 100%, 100% 12px;
+}
+
+/* Chồng giấy: bóng đặc lệch, không mờ */
+@utility shadow-sheet {
+  box-shadow: 6px 6px 0 0 var(--color-grid);
+}
+
+/* Vân vải bìa vở */
+@utility bg-linen {
+  background-image:
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 0.07) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(-45deg, rgb(0 0 0 / 0.06) 0 1px, transparent 1px 5px);
+}
+
+/* Giấy kẻ ngang của sổ liên lạc, mỗi dòng 2.25rem để khớp leading-9 */
+@utility bg-lined {
+  background-color: #fffdf7;
+  background-image: linear-gradient(to bottom, transparent calc(2.25rem - 1.5px), rgb(42 127 212 / 0.28) calc(2.25rem - 1.5px));
+  background-size: 100% 2.25rem;
+}
+
+/* Vạch chia của thước kẻ, mỗi 10% */
+@utility ruler-ticks {
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 calc(10% - 1.5px),
+    rgb(42 22 115 / 0.28) calc(10% - 1.5px) 10%
+  );
+}
