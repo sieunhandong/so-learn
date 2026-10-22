@@ -150,8 +150,8 @@ badges: id, student_id, badge_type, earned_at
 ## Biến môi trường
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=     # URL project Supabase
-NEXT_PUBLIC_SUPABASE_ANON_KEY= # Anon key (public)
+SUPABASE_URL=       # URL project Supabase (chỉ server đọc)
+SUPABASE_ANON_KEY=  # Anon hoặc publishable key, không dùng service_role
 ```
 
 File `.env.local` — không commit lên git (đã có trong `.gitignore`)

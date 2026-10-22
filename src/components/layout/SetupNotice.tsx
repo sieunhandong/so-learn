@@ -10,8 +10,8 @@ export default function SetupNotice() {
         <ol className="mt-4 list-decimal space-y-2 pl-6 text-lg text-graphite">
           <li>Tạo project trên Supabase.</li>
           <li>
-            Tạo file <code className="rounded bg-grid/50 px-1.5 font-mono text-base">.env.local</code> có <code className="rounded bg-grid/50 px-1.5 font-mono text-base">NEXT_PUBLIC_SUPABASE_URL</code> và{' '}
-            <code className="rounded bg-grid/50 px-1.5 font-mono text-base">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>.
+            Tạo file <code className="rounded bg-grid/50 px-1.5 font-mono text-base">.env.local</code> có <code className="rounded bg-grid/50 px-1.5 font-mono text-base">SUPABASE_URL</code> và{' '}
+            <code className="rounded bg-grid/50 px-1.5 font-mono text-base">SUPABASE_ANON_KEY</code>.
           </li>
           <li>
             Chạy <code className="rounded bg-grid/50 px-1.5 font-mono text-base">supabase/migrations/…_init.sql</code> rồi{' '}

@@ -15,8 +15,8 @@ Làm theo thứ tự. Mỗi bước có cách kiểm tra để biết đã xong 
 3. Mở file `.env.local` ở thư mục gốc dự án, điền:
 
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://<mã-project>.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<khóa anon hoặc publishable>
+SUPABASE_URL=https://<mã-project>.supabase.co
+SUPABASE_ANON_KEY=<khóa anon hoặc publishable>
 ```
 
 - Không dùng khóa **service_role / secret** ở đây: khóa đó bỏ qua RLS.
@@ -61,7 +61,7 @@ npm run dev
 
 ## 6. Đưa lên Vercel
 
-1. Trên Vercel, vào **Project → Settings → Environment Variables**, thêm `NEXT_PUBLIC_SUPABASE_URL` và `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+1. Trên Vercel, vào **Project → Settings → Environment Variables**, thêm `SUPABASE_URL` và `SUPABASE_ANON_KEY` (Type: Secret được, vì chỉ server đọc hai biến này).
 2. Trên Supabase, đổi **Site URL** thành tên miền thật và thêm `https://<tên-miền>/auth/callback` vào **Redirect URLs**.
 3. Deploy lại.
 

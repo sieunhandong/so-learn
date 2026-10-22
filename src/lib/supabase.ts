@@ -5,14 +5,16 @@ import { cookies } from 'next/headers'
 import { NextResponse, type NextRequest } from 'next/server'
 import type { Database } from '@/types/database'
 
+// Mọi truy cập Supabase đều chạy ở server, nên không cần tiền tố NEXT_PUBLIC_ (giá trị không bị gửi xuống trình duyệt).
+// Vẫn nhận tên cũ có NEXT_PUBLIC_ để máy nào đang dùng tên cũ không bị hỏng.
 function env() {
   return {
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    key: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    url: process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL,
+    key: process.env.SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   }
 }
 
-/** Đã khai báo NEXT_PUBLIC_SUPABASE_URL và NEXT_PUBLIC_SUPABASE_ANON_KEY trong .env.local chưa */
+/** Đã khai báo SUPABASE_URL và SUPABASE_ANON_KEY chưa */
 export function isSupabaseConfigured(): boolean {
   const { url, key } = env()
   return Boolean(url && key)
@@ -22,7 +24,7 @@ export function isSupabaseConfigured(): boolean {
 export async function createSupabase() {
   const { url, key } = env()
   if (!url || !key) {
-    throw new Error('Thiếu NEXT_PUBLIC_SUPABASE_URL hoặc NEXT_PUBLIC_SUPABASE_ANON_KEY trong .env.local')
+    throw new Error('Thiếu SUPABASE_URL hoặc SUPABASE_ANON_KEY trong biến môi trường')
   }
   const cookieStore = await cookies()
   return createServerClient<Database>(url, key, {
