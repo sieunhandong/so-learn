@@ -15,11 +15,12 @@ interface QuizResultProps {
   stars: number
   backHref: string
   onRestart: () => void
+  saveNote?: React.ReactNode
 }
 
 const messages = ['', 'Bé đã làm xong cả bài, luyện thêm là giỏi ngay!', 'Giỏi lắm, chỉ còn vài câu phải thử lại thôi.', 'Xuất sắc, gần như câu nào cũng đúng ngay!']
 
-export default function QuizResult({ topicTitle, total, firstTryCount, stars, backHref, onRestart }: QuizResultProps) {
+export default function QuizResult({ topicTitle, total, firstTryCount, stars, backHref, onRestart, saveNote }: QuizResultProps) {
   const medals = medalCount(firstTryCount, total)
 
   return (
@@ -57,6 +58,7 @@ export default function QuizResult({ topicTitle, total, firstTryCount, stars, ba
           <p className="mt-6 text-lg text-pencil">
             Đúng ngay lần đầu {firstTryCount}/{total} câu. Bé nhận được {stars} sao.
           </p>
+          {saveNote && <div className="mt-2 text-base text-pencil">{saveNote}</div>}
   
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button onClick={onRestart} variant="paper" className="flex-1">

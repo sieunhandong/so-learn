@@ -14,12 +14,16 @@ interface QuizRunnerProps {
   questions: Question[]
   topicTitle: string
   backHref: string
+  /** Gọi sau mỗi lần bé chọn đáp án, để lưu tiến độ */
+  onAttempt?: (questionId: string, isCorrect: boolean, seconds: number) => void
+  /** Dòng nhỏ cho biết sao có được lưu vào hồ sơ hay không */
+  saveNote?: React.ReactNode
 }
 
 // Lật trang vở: mép phải nhấc lên rồi quay sang trái quanh gáy
 const turnAway = { rotateY: -110, opacity: 0, zIndex: 20, transition: { duration: 0.55, ease: [0.45, 0, 0.55, 1] as const } }
 
-export default function QuizRunner({ questions, topicTitle, backHref }: QuizRunnerProps) {
+export default function QuizRunner({ questions, topicTitle, backHref, onAttempt, saveNote }: QuizRunnerProps) {
   const quiz = useQuizProgress(questions.length)
   const question = questions[quiz.index]
   const remaining = questions.length - quiz.index - 1
@@ -33,6 +37,7 @@ export default function QuizRunner({ questions, topicTitle, backHref }: QuizRunn
         stars={quiz.stars}
         backHref={backHref}
         onRestart={quiz.restart}
+        saveNote={saveNote}
       />
     )
   }
@@ -52,6 +57,7 @@ export default function QuizRunner({ questions, topicTitle, backHref }: QuizRunn
         />
         <StarCount value={quiz.stars} />
       </div>
+      {saveNote && <div className="-mt-5 mb-6 text-base text-pencil">{saveNote}</div>}
 
       <PaperStack sheets={remaining} className="perspective-[1800px]">
         <AnimatePresence mode="popLayout" initial={false}>
@@ -63,7 +69,12 @@ export default function QuizRunner({ questions, topicTitle, backHref }: QuizRunn
             transition={{ duration: 0.35, ease: 'easeOut' }}
             className="relative origin-left"
           >
-            <QuestionSheet question={question} onSolved={quiz.markSolved} showReward>
+            <QuestionSheet
+              question={question}
+              onSolved={quiz.markSolved}
+              onAttempt={(isCorrect, seconds) => onAttempt?.(question.id, isCorrect, seconds)}
+              showReward
+            >
               <Button onClick={quiz.next} autoFocus className="mt-2 w-full">
                 {quiz.isLast ? 'Xem kết quả' : 'Câu tiếp theo'}
               </Button>

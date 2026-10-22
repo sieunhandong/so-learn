@@ -1,19 +1,20 @@
 import { getQuestions } from '@/lib/content'
-import type { QuestionVisual } from '@/types/math'
 import ProblemShowcase, { type ProblemExample } from './ProblemShowcase'
 
-const kinds: { kind: QuestionVisual['kind']; title: string; body: string }[] = [
-  { kind: 'add', title: 'Gộp hai nhóm', body: 'Bé đếm nhóm thứ nhất, rồi đếm tiếp sang nhóm thứ hai để ra tổng.' },
-  { kind: 'take-away', title: 'Gạch bớt đi', body: 'Phần bị bớt được gạch bằng bút đỏ. Bé chỉ cần đếm phần còn lại.' },
-  { kind: 'compare', title: 'So bó chục', body: 'Mỗi bó là 10 que. Bé so số bó trước, bằng nhau thì so que lẻ.' },
-]
+// Tên tab và cách làm cho từng câu hỏi mẫu, theo id câu hỏi trong bộ luyện tập
+const notes: Record<string, { title: string; body: string }> = {
+  '1': { title: 'Gộp hai nhóm táo', body: 'Bé đếm nhóm thứ nhất, rồi đếm tiếp sang nhóm thứ hai để ra tổng.' },
+  '2': { title: 'Đếm tiếp chấm tròn', body: 'Hai màu chấm cho hai số. Bé bắt đầu từ 7, đếm tiếp thêm 4 chấm vàng.' },
+  '3': { title: 'Gạch bớt que tính', body: 'Phần bị bớt được gạch bằng bút đỏ. Bé chỉ cần đếm phần còn lại.' },
+  '4': { title: 'So bó chục', body: 'Mỗi bó là 10 que. Bé so số bó trước, bằng nhau thì so que lẻ.' },
+  '5': { title: 'Hai nhóm bằng nhau', body: 'Hai nhóm cùng 6 que. Bé đếm cả hai nhóm, hoặc nhớ 6 + 6 là gấp đôi 6.' },
+}
 
-/** Ba cách minh họa bài toán, lấy từ chính các câu hỏi trong bài luyện tập */
+/** Mọi câu hỏi mẫu trong bài luyện tập, mỗi câu một tab trong băng trượt */
 export default function ProblemGallery() {
-  const questions = getQuestions()
-  const examples: ProblemExample[] = kinds.flatMap(k => {
-    const question = questions.find(q => q.visual.kind === k.kind)
-    return question ? [{ ...k, question }] : []
+  const examples: ProblemExample[] = getQuestions().flatMap(question => {
+    const note = notes[question.id]
+    return note ? [{ ...note, question }] : []
   })
 
   return <ProblemShowcase examples={examples} />

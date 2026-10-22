@@ -19,6 +19,8 @@ const stateClasses: Record<AnswerState, string> = {
 
 export default function AnswerOption({ label, state, onChoose }: AnswerOptionProps) {
   const disabled = state !== 'idle'
+  // Số và dấu thì chữ to; đáp án bằng chữ (ví dụ "Khối hộp chữ nhật") thì nhỏ hơn cho vừa ô
+  const size = label.length <= 4 ? 'text-3xl md:text-4xl' : 'text-xl leading-tight md:text-2xl'
 
   return (
     <motion.button
@@ -28,7 +30,7 @@ export default function AnswerOption({ label, state, onChoose }: AnswerOptionPro
       aria-label={state === 'wrong' ? `${label}, chưa đúng` : label}
       animate={state === 'wrong' ? { x: [0, -9, 9, -6, 6, 0] } : { x: 0 }}
       transition={{ duration: 0.4 }}
-      className={`min-h-20 rounded-2xl border-2 px-4 py-3 font-display text-3xl font-bold transition-[background-color,border-color,transform,box-shadow] duration-100 disabled:cursor-default md:text-4xl ${stateClasses[state]}`}
+      className={`min-h-20 rounded-2xl border-2 px-3 py-3 font-display font-bold transition-[background-color,border-color,transform,box-shadow] duration-100 disabled:cursor-default ${size} ${stateClasses[state]}`}
     >
       {label}
     </motion.button>

@@ -31,7 +31,10 @@ npm run dev        # Chạy dev server (localhost:3000)
 npm run build      # Build production
 npm run lint       # Kiểm tra lỗi ESLint
 npm run type-check # Kiểm tra TypeScript
+npm run seed:build # Sinh supabase/seed.sql từ src/content/grade1.ts
 ```
+
+Cài đặt Supabase: xem `docs/supabase-setup.md`.
 
 ---
 
@@ -45,15 +48,25 @@ src/
 │   ├── math/
 │   │   ├── [grade]/         # Chọn lớp (1-5)
 │   │   └── [grade]/[topic]/ # Bài học theo chủ đề
+│   ├── auth/callback/       # Nhận link xác nhận email
 │   └── parent/              # Dashboard phụ huynh
 ├── components/
 │   ├── ui/                  # Component dùng chung (Button, Card...)
-│   ├── math/                # Component bài toán (Quiz, Flashcard...)
+│   ├── math/                # Component bài toán (Quiz, hình minh họa trong visuals/)
+│   ├── landing/             # Các section trang chủ
 │   └── layout/              # Header, Sidebar, Navigation
+├── content/
+│   └── grade1.ts            # Nội dung toán lớp 1 (nguồn sinh seed.sql)
 ├── lib/
-│   └── supabase.ts          # Supabase client
-├── types/                   # TypeScript interfaces
+│   ├── supabase.ts          # Supabase client (server)
+│   ├── data.ts              # Truy vấn dữ liệu cho các trang
+│   └── progress.ts          # Tính sao, chuỗi ngày từ bảng progress
+├── proxy.ts                 # Làm mới phiên, chặn trang cần đăng nhập (Next 16: thay middleware.ts)
+├── types/                   # TypeScript interfaces (database.ts khớp schema)
 └── hooks/                   # Custom React hooks
+supabase/
+├── migrations/              # Bảng + RLS, chạy một lần
+└── seed.sql                 # Bài học, sinh tự động, chạy lại được
 ```
 
 ---
@@ -67,10 +80,15 @@ users: id, email, created_at
 -- Hồ sơ học sinh
 students: id, parent_id, name, grade (1-5), avatar, created_at
 
+-- Bài học (chủ đề con) theo lớp, kèm phần "Cùng học"
+topics: id (slug), grade, chapter_number, chapter_title, position,
+        title, mark, description, intro (jsonb)
+
 -- Ngân hàng câu hỏi
-exercises: id, grade, topic, question, answer, options (jsonb),
+exercises: id, slug (unique), grade, topic (→ topics.id), position,
+           question, answer, options (jsonb),
            type (multiple_choice|drag_drop|fill_blank), difficulty,
-           image_url, audio_url
+           visual (jsonb), explain, image_url, audio_url
 
 -- Tiến độ học
 progress: id, student_id, exercise_id, is_correct, time_spent, created_at
@@ -85,7 +103,7 @@ badges: id, student_id, badge_type, earned_at
 
 | Lớp | Chủ đề |
 |-----|--------|
-| 1 | Đếm 1–100, Cộng/trừ trong 20 |
+| 1 | Theo GDPT 2018: Số 0–10 và so sánh, Mấy và mấy, Hình phẳng và khối, Vị trí, Cộng/trừ trong 10, Số đến 100, Độ dài (cm), Cộng/trừ không nhớ trong 100, Xem giờ đúng, Ngày trong tuần |
 | 2 | Cộng/trừ có nhớ, Bảng nhân 2–5 |
 | 3 | Nhân/chia, Phân số đơn giản |
 | 4 | Phân số, Góc, Diện tích |

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "type-check": "tsc --noEmit",
+    "seed:build": "node --experimental-strip-types --no-warnings scripts/build-seed.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

@@ -9,6 +9,7 @@ import ParentFaq from '@/components/landing/ParentFaq'
 import ProblemGallery from '@/components/landing/ProblemGallery'
 import RewardsSection from '@/components/landing/RewardsSection'
 import SectionHeading, { Accent } from '@/components/landing/SectionHeading'
+import AccountNav from '@/components/layout/AccountNav'
 import SiteFooter from '@/components/layout/SiteFooter'
 import SiteHeader from '@/components/layout/SiteHeader'
 import ButtonLink from '@/components/ui/ButtonLink'
@@ -33,7 +34,7 @@ export default function HomePage() {
   return (
     <>
       <SiteHeader>
-        <ButtonLink href="/dashboard">Vào học</ButtonLink>
+        <AccountNav />
       </SiteHeader>
 
       {/* overflow-x-clip: cắt phần trang trí 3D lệch ra mép mà không tạo vùng cuộn mới */}
@@ -99,7 +100,7 @@ export default function HomePage() {
                   Chương trình <Accent>5 lớp</Accent>, bài nào cũng vừa sức
                 </>
               }
-              lede="Chọn một lớp để xem mục lục. Bài sau mở khi bé đã bắt đầu bài trước."
+              lede="Chọn một lớp để mở vở, rồi lật từng trang xem các bài. Bài sau mở khi bé đã bắt đầu bài trước."
             />
             <div className="mt-12">
               <CurriculumExplorer grades={grades} topicsByGrade={topicsByGrade} />
