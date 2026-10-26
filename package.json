@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "type-check": "tsc --noEmit",
+    "test": "node --experimental-strip-types --no-warnings --test \"tests/**/*.test.mjs\"",
     "seed:build": "node --experimental-strip-types --no-warnings scripts/build-seed.mjs"
   },
   "dependencies": {
