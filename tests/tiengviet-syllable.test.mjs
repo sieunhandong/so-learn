@@ -31,3 +31,8 @@ test('kết quả ở dạng NFC', () => {
   for (const [s] of cases) assert.equal(s, s.normalize('NFC'))
   assert.equal(composeSyllable('tr', 'ưa', 'huyen'), 'trừa'.normalize('NFC'))
 })
+test('syllablesOf bỏ qua emoji có bộ chọn biểu tượng U+FE0F và ZWJ', () => {
+  assert.deepEqual(syllablesOf('☀️ ✏️'), [])
+  assert.deepEqual(syllablesOf('\u{1F3C3}‍♂️'), [])
+  assert.deepEqual(syllablesOf('bà ☀️ bé'), ['bà', 'bé'])
+})

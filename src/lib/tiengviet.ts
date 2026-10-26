@@ -99,9 +99,12 @@ export function composeSyllable(onset: string, rime: string, tone: Tone): string
   return (head.normalize('NFC') + chars.join('')).normalize('NFC')
 }
 
-/** Các cụm chữ cái trong văn bản, viết thường: "Bà bế bé." → ["bà", "bế", "bé"] */
+/**
+ * Các cụm chữ cái trong văn bản, viết thường: "Bà bế bé." → ["bà", "bế", "bé"].
+ * Cụm phải mở đầu bằng một chữ cái, nên dấu phụ rời (như U+FE0F trong emoji) không thành một "tiếng".
+ */
 export function syllablesOf(text: string): string[] {
-  return text.normalize('NFC').toLowerCase().match(/[\p{L}\p{M}]+/gu) ?? []
+  return text.normalize('NFC').toLowerCase().match(/\p{L}[\p{L}\p{M}]*/gu) ?? []
 }
 
 // --- Kiểm tra nội dung: chính tả và chữ đã học ---
@@ -210,6 +213,20 @@ export function checkLessons(lessons: ReadingLessonSeed[]): string[] {
     lesson.exercises.forEach((ex, i) => {
       const where = `Bài ${lesson.number} (${lesson.slug}), câu ${i + 1}`
       check(where, exerciseTexts(ex))
+      // Dạng nghe: lựa chọn gây nhiễu được miễn, nhưng đáp án là chữ trẻ phải nhận ra nên phải đã học.
+      // Đáp án thường là một âm/vần (b, ch, ia) nên so với units trước, không phải âm/vần thì xét như tiếng
+      if (ex.visual.kind === 'listen' && !learned.units.has(ex.answer)) {
+        check(where, [{ text: ex.answer, skipSpelling: false }])
+      }
+      // Dạng ghép tiếng: các mảnh trẻ chọn để ghép cũng phải là chữ và dấu đã học
+      if (ex.visual.kind === 'build') {
+        for (const tile of [...ex.visual.onsets, ...ex.visual.rimes]) {
+          if (!learned.units.has(tile)) errors.add(`${where}: mảnh "${tile}" chưa học`)
+        }
+        for (const tone of ex.visual.tones) {
+          if (tone !== 'ngang' && !learned.tones.has(tone)) errors.add(`${where}: mảnh dấu ${TONE_NAMES[tone]} chưa học`)
+        }
+      }
       if (ex.visual.kind === 'tone') {
         for (const option of ex.options) {
           const tone = TONES.find((t) => toneLabel(t) === option.normalize('NFC'))

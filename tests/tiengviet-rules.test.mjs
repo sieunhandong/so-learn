@@ -179,3 +179,48 @@ test('checkLessons: allowMisspelled vẫn kiểm tra chữ đã học của lự
   assert.equal(errors.length, 1)
   assert.ok(errors[0].includes('"c"'), errors[0])
 })
+
+test('checkLessons: emoji có U+FE0F trong lựa chọn không bị coi là chữ chưa học', () => {
+  const emoji = ['☀️', '✏️', '\u{1F3C3}‍♂️']
+  const ex = { ...base, visual: { kind: 'picture', emoji: '🙋' }, options: emoji, answer: emoji[0] }
+  assert.deepEqual(checkLessons(twoLessons([], [ex])), [])
+})
+
+// --- Dạng 1 (listen): đáp án là chữ trẻ phải nhận ra, nên phải đã học ---
+
+test('checkLessons: đáp án của listen là âm/chữ chưa học thì báo lỗi', () => {
+  const listen = { ...base, visual: { kind: 'listen', say: 'm' }, options: ['b', 'm'], answer: 'm' }
+  const errors = checkLessons(twoLessons([], [listen]))
+  assert.equal(errors.length, 1)
+  assert.ok(errors[0].startsWith('Bài 2 (tv1-bai-02), câu 1: '), errors[0])
+  assert.ok(errors[0].includes('"m"'), errors[0])
+})
+
+test('checkLessons: đáp án của listen là âm/chữ đã học thì không lỗi, kể cả vần nhiều chữ', () => {
+  const listen = { ...base, visual: { kind: 'listen', say: 'b' }, options: ['b', 'm'], answer: 'b' }
+  assert.deepEqual(checkLessons(twoLessons([], [listen])), [])
+  const lessons = [lesson(1, { units: ['ia', 'ch'], tones: [] }, [], [])]
+  for (const answer of ['ia', 'ch']) {
+    const ex = { ...base, visual: { kind: 'listen', say: answer }, options: [answer, 'x'], answer }
+    assert.deepEqual(checkLessons([{ ...lessons[0], exercises: [ex] }]), [], answer)
+  }
+})
+
+// --- Dạng 5 (build): các mảnh ghép trẻ phải đọc cũng phải đã học ---
+
+const build = (onsets, rimes, tones, answer = 'ba') => ({
+  ...base, visual: { kind: 'build', say: answer, onsets, rimes, tones }, options: [], answer,
+})
+
+test('checkLessons: mảnh ghép của build đều đã học thì không lỗi', () => {
+  assert.deepEqual(checkLessons(twoLessons([], [build(['b'], ['a'], ['ngang', 'huyen'], 'bà')])), [])
+})
+
+test('checkLessons: mảnh âm đầu, vần, dấu chưa học của build đều báo lỗi', () => {
+  const errors = checkLessons(twoLessons([], [build(['b', 'm'], ['a', 'o'], ['huyen', 'sac'])]))
+  assert.equal(errors.length, 3)
+  for (const e of errors) assert.ok(e.startsWith('Bài 2 (tv1-bai-02), câu 1: '), e)
+  assert.ok(errors.some((e) => e.includes('"m"')), errors.join('\n'))
+  assert.ok(errors.some((e) => e.includes('"o"')), errors.join('\n'))
+  assert.ok(errors.some((e) => e.includes('sắc')), errors.join('\n'))
+})
