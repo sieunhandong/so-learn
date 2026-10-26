@@ -2,7 +2,9 @@
 // File này Node chạy trực tiếp (--experimental-strip-types): chỉ dùng cú pháp TypeScript xóa được.
 // Quy ước Unicode: đầu vào/đầu ra luôn ở dạng NFC; bên trong dùng NFD để tìm và bỏ dấu thanh,
 // giữ nguyên dấu phụ của nguyên âm (mũ ̂, trăng ̆, móc ̛).
-import type { SyllableParts, Tone } from '../types/tiengviet'
+import type {
+  Learned, ReadingExerciseSeed, ReadingLessonSeed, ReadingVisual, SyllableParts, Tone,
+} from '../types/tiengviet'
 
 // --- Thanh điệu ---
 
@@ -100,4 +102,125 @@ export function composeSyllable(onset: string, rime: string, tone: Tone): string
 /** Các cụm chữ cái trong văn bản, viết thường: "Bà bế bé." → ["bà", "bế", "bé"] */
 export function syllablesOf(text: string): string[] {
   return text.normalize('NFC').toLowerCase().match(/[\p{L}\p{M}]+/gu) ?? []
+}
+
+// --- Kiểm tra nội dung: chính tả và chữ đã học ---
+
+/** Âm đầu viết bằng c/g/ng (đứng trước a, o, u...) và dạng viết trước i, e, ê */
+const FRONT_SPELLING: Record<string, string> = { c: 'k', g: 'gh', ng: 'ngh' }
+/** Chiều ngược lại: k/gh/ngh chỉ đứng trước i, e, ê */
+const BACK_SPELLING: Record<string, string> = { k: 'c', gh: 'g', ngh: 'ng' }
+
+/** Vần có bắt đầu bằng i, e, ê không (kể cả "ia"); xét chữ cái gốc, bỏ dấu phụ */
+function startsWithFrontVowel(rime: string): boolean {
+  return /^[ie]/.test(rime.normalize('NFD'))
+}
+
+/**
+ * Kiểm tra quy tắc chính tả c/k, g/gh, ng/ngh của một tiếng. Trả về mô tả lỗi, hoặc null nếu đúng.
+ * Các âm đầu gi và qu không xét; "k" trước "y" (kỳ, kỹ) là hợp lệ.
+ */
+export function spellingError(syllable: string): string | null {
+  const s = syllable.normalize('NFC').toLowerCase()
+  const { onset, rime } = splitSyllable(s)
+  if (onset in FRONT_SPELLING && startsWithFrontVowel(rime)) {
+    return `"${s}" sai chính tả: "${onset}" đứng trước i, e, ê phải viết "${FRONT_SPELLING[onset]}"`
+  }
+  if (onset in BACK_SPELLING && !startsWithFrontVowel(rime) && !(onset === 'k' && rime.startsWith('y'))) {
+    return `"${s}" sai chính tả: "${onset}" chỉ đứng trước i, e, ê, các vần khác phải viết "${BACK_SPELLING[onset]}"`
+  }
+  return null
+}
+
+/**
+ * Kiểm tra một tiếng chỉ dùng chữ và dấu đã học. Trả về mô tả những gì chưa học, hoặc null.
+ * Vần phải nằm nguyên trong learned.units (vần "ia" chỉ được dùng sau khi đã học "ia").
+ */
+export function learnedError(syllable: string, learned: Learned): string | null {
+  const s = syllable.normalize('NFC').toLowerCase()
+  const { onset, rime, tone } = splitSyllable(s)
+  const missing: string[] = []
+  if (onset !== '' && !learned.units.has(onset)) missing.push(`"${onset}"`)
+  if (rime !== '' && !learned.units.has(rime)) missing.push(`"${rime}"`)
+  if (tone !== 'ngang' && !learned.tones.has(tone)) missing.push(`dấu ${TONE_NAMES[tone]}`)
+  return missing.length > 0 ? `"${s}" chưa học ${missing.join(', ')}` : null
+}
+
+/** Phần chữ trẻ phải tự đọc trong hình minh họa (spec 6.2); các kind còn lại không có */
+export function readableTexts(visual: ReadingVisual): string[] {
+  switch (visual.kind) {
+    case 'picture': return visual.word ? [visual.word] : []
+    case 'pictures': return visual.items.map((item) => item.word)
+    case 'spell': return visual.steps.map((step) => step.result)
+    case 'sentence': return [visual.text]
+    case 'tone': return [visual.base]
+    default: return []
+  }
+}
+
+/** Một đoạn chữ trẻ phải đọc; skipSpelling = lựa chọn sai của câu chính tả (allowMisspelled), không xét quy tắc chính tả */
+interface ReadableText { text: string; skipSpelling: boolean }
+
+function exerciseTexts(ex: ReadingExerciseSeed): ReadableText[] {
+  const out: ReadableText[] = readableTexts(ex.visual).map((text) => ({ text, skipSpelling: false }))
+  // Dạng nghe và dạng dấu thanh: lựa chọn không phải chữ trẻ phải tự đọc
+  if (ex.visual.kind !== 'listen' && ex.visual.kind !== 'tone') {
+    for (const option of ex.options) {
+      out.push({ text: option, skipSpelling: ex.allowMisspelled === true && option !== ex.answer })
+    }
+  }
+  // Dạng ghép tiếng: đáp án là chữ trẻ ghép ra
+  if (ex.visual.kind === 'build') out.push({ text: ex.answer, skipSpelling: false })
+  return out
+}
+
+/** Phần chữ trẻ phải tự đọc trong một câu: hình minh họa + lựa chọn (+ đáp án với dạng ghép tiếng) */
+export function exerciseReadables(ex: ReadingExerciseSeed): string[] {
+  return exerciseTexts(ex).map((t) => t.text)
+}
+
+/**
+ * Quét các bài theo thứ tự, cộng dồn chữ đã học (bài N dùng được cả những gì bài N dạy).
+ * Trả về danh sách lỗi cho người soạn nội dung, rỗng nếu nội dung hợp lệ.
+ */
+export function checkLessons(lessons: ReadingLessonSeed[]): string[] {
+  const learned: Learned = { units: new Set<string>(), tones: new Set<Tone>() }
+  const errors = new Set<string>() // Set để cùng một lỗi lặp lại trong một câu chỉ báo một lần
+
+  for (const lesson of lessons) {
+    for (const unit of lesson.teaches.units) learned.units.add(unit)
+    for (const tone of lesson.teaches.tones) learned.tones.add(tone)
+
+    const check = (where: string, texts: ReadableText[]): void => {
+      for (const { text, skipSpelling } of texts) {
+        for (const syllable of syllablesOf(text)) {
+          const found = [learnedError(syllable, learned), skipSpelling ? null : spellingError(syllable)]
+          for (const message of found) {
+            if (message !== null) errors.add(`${where}: ${message}`)
+          }
+        }
+      }
+    }
+
+    lesson.intro.forEach((card, i) => {
+      const where = `Bài ${lesson.number} (${lesson.slug}), thẻ ${i + 1}`
+      check(where, readableTexts(card.visual).map((text) => ({ text, skipSpelling: false })))
+    })
+
+    lesson.exercises.forEach((ex, i) => {
+      const where = `Bài ${lesson.number} (${lesson.slug}), câu ${i + 1}`
+      check(where, exerciseTexts(ex))
+      if (ex.visual.kind === 'tone') {
+        for (const option of ex.options) {
+          const tone = TONES.find((t) => toneLabel(t) === option.normalize('NFC'))
+          if (tone === undefined) {
+            errors.add(`${where}: "${option}" không phải tên một dấu thanh`)
+          } else if (tone !== 'ngang' && !learned.tones.has(tone)) {
+            errors.add(`${where}: "${option}" chưa học dấu ${TONE_NAMES[tone]}`)
+          }
+        }
+      }
+    })
+  }
+  return Array.from(errors)
 }
