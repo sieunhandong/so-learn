@@ -7,11 +7,13 @@ import { recordAttempt } from '@/app/actions/progress'
 import Button from '@/components/ui/Button'
 import { StarIcon } from '@/components/ui/Icons'
 import NotebookPage from '@/components/ui/NotebookPage'
-import CountingVisual from './CountingVisual'
+import { useVietnameseVoice } from '@/hooks/useVietnameseVoice'
+import { SUBJECTS } from '@/lib/subjects'
+import LessonVisualView from './LessonVisualView'
 import QuizRunner from './QuizRunner'
 import SpeakButton from './SpeakButton'
 import TopicMark from './TopicMark'
-import type { LessonIntro, Question } from '@/types/math'
+import type { LessonIntroItem, LessonQuestion, Subject } from '@/types/lesson'
 
 export interface LessonInfo {
   title: string
@@ -19,12 +21,14 @@ export interface LessonInfo {
   description: string
   chapterNumber: number
   chapterTitle: string
-  intro: LessonIntro[]
+  intro: LessonIntroItem[]
 }
 
 interface LessonViewProps {
+  /** Môn học của bài: quyết định nhãn tiêu đề, lời nhắc khi sai và lời báo thiếu giọng đọc */
+  subject: Subject
   lesson: LessonInfo
-  questions: Question[]
+  questions: LessonQuestion[]
   backHref: string
   /** Tên bé đang học; null khi khách chưa đăng nhập (không lưu tiến độ) */
   studentName: string | null
@@ -63,7 +67,9 @@ function Steps({ stage, onChange }: { stage: Stage; onChange: (s: Stage) => void
   )
 }
 
-export default function LessonView({ lesson, questions, backHref, studentName }: LessonViewProps) {
+export default function LessonView({ subject, lesson, questions, backHref, studentName }: LessonViewProps) {
+  const info = SUBJECTS[subject]
+  const voice = useVietnameseVoice()
   const [stage, setStage] = useState<Stage>('learn')
   const [newBadges, setNewBadges] = useState<string[]>([])
   const [saveFailed, setSaveFailed] = useState(false)
@@ -98,7 +104,7 @@ export default function LessonView({ lesson, questions, backHref, studentName }:
     <>
       <div className="mx-auto w-full max-w-3xl px-4 pt-8 md:px-6">
         <p className="font-display text-lg font-bold text-pencil">
-          Chủ đề {lesson.chapterNumber}: {lesson.chapterTitle}
+          {info.chapterLabel} {lesson.chapterNumber}: {lesson.chapterTitle}
         </p>
         <h1 className="mt-2 flex items-center gap-4 font-display text-3xl font-extrabold leading-tight text-ink-deep md:text-4xl">
           <TopicMark mark={lesson.mark} size="lg" />
@@ -107,6 +113,12 @@ export default function LessonView({ lesson, questions, backHref, studentName }:
         <div className="mt-5">
           <Steps stage={stage} onChange={setStage} />
         </div>
+        {/* Chỉ báo khi chắc chắn thiếu giọng tiếng Việt, không báo lúc còn đang kiểm tra */}
+        {subject === 'tieng-viet' && voice === 'missing' && (
+          <p className="mt-4 rounded-2xl border-2 border-dashed border-pen/40 bg-white/70 px-4 py-3 text-lg text-pencil">
+            Máy này có thể chưa có giọng đọc tiếng Việt. Bố mẹ cài thêm giọng tiếng Việt trong phần cài đặt của máy để bé nghe được bài.
+          </p>
+        )}
       </div>
 
       {stage === 'learn' ? (
@@ -122,7 +134,7 @@ export default function LessonView({ lesson, questions, backHref, studentName }:
                     <SpeakButton text={item.text} />
                   </div>
                   <div className="mt-5 max-w-full overflow-x-auto pb-1">
-                    <CountingVisual visual={item.visual} />
+                    <LessonVisualView visual={item.visual} />
                   </div>
                 </NotebookPage>
               </li>
@@ -133,7 +145,7 @@ export default function LessonView({ lesson, questions, backHref, studentName }:
           </Button>
         </main>
       ) : (
-        <QuizRunner questions={questions} topicTitle={lesson.title} backHref={backHref} onAttempt={handleAttempt} saveNote={saveNote} />
+        <QuizRunner questions={questions} topicTitle={lesson.title} backHref={backHref} wrongHint={info.wrongHint} onAttempt={handleAttempt} saveNote={saveNote} />
       )}
 
       {/* Báo huy hiệu mới */}

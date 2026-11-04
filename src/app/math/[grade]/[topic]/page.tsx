@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import AccountNav from '@/components/layout/AccountNav'
 import SetupNotice from '@/components/layout/SetupNotice'
 import SiteHeader from '@/components/layout/SiteHeader'
-import LessonView from '@/components/math/LessonView'
+import LessonView from '@/components/learn/LessonView'
 import ButtonLink from '@/components/ui/ButtonLink'
 import NotebookPage from '@/components/ui/NotebookPage'
 import { READY_GRADES, getGrade } from '@/lib/content'
@@ -58,6 +58,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
     <>
       {header}
       <LessonView
+        subject="math"
         lesson={{
           title: lesson.topic.title,
           mark: lesson.topic.mark,

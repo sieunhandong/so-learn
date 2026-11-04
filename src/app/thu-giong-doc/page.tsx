@@ -1,5 +1,5 @@
 // Trang tạm để nghe thử giọng đọc tiếng Việt của trình duyệt. Không gắn link từ trang nào, xóa ở Task 17.
-import SpeakButton from '@/components/math/SpeakButton'
+import SpeakButton from '@/components/learn/SpeakButton'
 import BuildSyllable from '@/components/tieng-viet/BuildSyllable'
 import ReadingVisualView from '@/components/tieng-viet/ReadingVisualView'
 import VoiceStatusLine from '@/components/tieng-viet/VoiceStatusLine'

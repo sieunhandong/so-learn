@@ -1,4 +1,4 @@
-import TopicMark from '@/components/math/TopicMark'
+import TopicMark from '@/components/learn/TopicMark'
 
 const flow = [
   { mark: '1–5', title: 'Chọn lớp', body: 'Mở vở đúng lớp của bé, từ lớp 1 đến lớp 5.' },

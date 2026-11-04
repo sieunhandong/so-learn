@@ -2,8 +2,8 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { useAnswerAttempt } from '@/hooks/useAnswerAttempt'
-import AnswerOption, { type AnswerState } from '@/components/math/AnswerOption'
-import SpeakButton from '@/components/math/SpeakButton'
+import AnswerOption, { type AnswerState } from '@/components/learn/AnswerOption'
+import SpeakButton from '@/components/learn/SpeakButton'
 import RedStamp from '@/components/ui/RedStamp'
 import CubeDiorama from './CubeDiorama'
 import type { Question } from '@/types/math'

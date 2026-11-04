@@ -3,8 +3,9 @@ import { cookies } from 'next/headers'
 import { createSupabase, isSupabaseConfigured } from './supabase'
 import { computeStats, summarizeAttempts, type AttemptRow, type ExerciseResult, type StudentStats } from './progress'
 import { BADGES } from './rewards'
-import type { ExerciseRecord, Student, TopicRecord } from '@/types/database'
-import type { Question } from '@/types/math'
+import { toQuestion } from './questions'
+import type { Student, TopicRecord } from '@/types/database'
+import type { LessonQuestion } from '@/types/lesson'
 
 /** Cookie ghi id của bé đang học trên máy này (chỉ là id, RLS vẫn kiểm tra quyền) */
 export const ACTIVE_STUDENT_COOKIE = 'so_learn_student'
@@ -86,14 +87,8 @@ export async function getGradeOutline(grade: number): Promise<ChapterSummary[]> 
   return chapters
 }
 
-function toQuestion(row: ExerciseRecord): Question | null {
-  const correct = row.options.indexOf(row.answer)
-  if (!row.visual || correct < 0) return null
-  return { id: row.id, prompt: row.question, visual: row.visual, options: row.options, correct, explain: row.explain }
-}
-
 /** Một bài học: thông tin bài và danh sách câu hỏi theo thứ tự */
-export async function getLesson(slug: string): Promise<{ topic: TopicRecord; questions: Question[] } | null> {
+export async function getLesson(slug: string): Promise<{ topic: TopicRecord; questions: LessonQuestion[] } | null> {
   const supabase = await createSupabase()
   const [topicRes, exercisesRes] = await Promise.all([
     supabase.from('topics').select('*').eq('id', slug).maybeSingle(),
@@ -102,7 +97,7 @@ export async function getLesson(slug: string): Promise<{ topic: TopicRecord; que
   if (topicRes.error) throw topicRes.error
   if (exercisesRes.error) throw exercisesRes.error
   if (!topicRes.data) return null
-  const questions = exercisesRes.data.map(toQuestion).filter((q): q is Question => q !== null)
+  const questions = exercisesRes.data.map(toQuestion).filter((q): q is LessonQuestion => q !== null)
   return { topic: topicRes.data, questions }
 }
 

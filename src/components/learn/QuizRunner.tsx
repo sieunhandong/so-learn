@@ -6,14 +6,17 @@ import Button from '@/components/ui/Button'
 import PaperStack from '@/components/ui/PaperStack'
 import ProgressRuler from '@/components/ui/ProgressRuler'
 import StarCount from '@/components/ui/StarCount'
+import BuildSyllable from '@/components/tieng-viet/BuildSyllable'
 import QuestionSheet from './QuestionSheet'
 import QuizResult from './QuizResult'
-import type { Question } from '@/types/math'
+import type { LessonQuestion } from '@/types/lesson'
 
 interface QuizRunnerProps {
-  questions: Question[]
+  questions: LessonQuestion[]
   topicTitle: string
   backHref: string
+  /** Lời nhắc nhẹ nhàng khi bé làm sai, tùy môn */
+  wrongHint: string
   /** Gọi sau mỗi lần bé chọn đáp án, để lưu tiến độ */
   onAttempt?: (questionId: string, isCorrect: boolean, seconds: number) => void
   /** Dòng nhỏ cho biết sao có được lưu vào hồ sơ hay không */
@@ -23,7 +26,7 @@ interface QuizRunnerProps {
 // Lật trang vở: mép phải nhấc lên rồi quay sang trái quanh gáy
 const turnAway = { rotateY: -110, opacity: 0, zIndex: 20, transition: { duration: 0.55, ease: [0.45, 0, 0.55, 1] as const } }
 
-export default function QuizRunner({ questions, topicTitle, backHref, onAttempt, saveNote }: QuizRunnerProps) {
+export default function QuizRunner({ questions, topicTitle, backHref, wrongHint, onAttempt, saveNote }: QuizRunnerProps) {
   const quiz = useQuizProgress(questions.length)
   const question = questions[quiz.index]
   const remaining = questions.length - quiz.index - 1
@@ -41,6 +44,12 @@ export default function QuizRunner({ questions, topicTitle, backHref, onAttempt,
       />
     )
   }
+
+  const nextButton = (
+    <Button onClick={quiz.next} autoFocus className="mt-2 w-full">
+      {quiz.isLast ? 'Xem kết quả' : 'Câu tiếp theo'}
+    </Button>
+  )
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-8 md:px-6">
@@ -69,16 +78,28 @@ export default function QuizRunner({ questions, topicTitle, backHref, onAttempt,
             transition={{ duration: 0.35, ease: 'easeOut' }}
             className="relative origin-left"
           >
-            <QuestionSheet
-              question={question}
-              onSolved={quiz.markSolved}
-              onAttempt={(isCorrect, seconds) => onAttempt?.(question.id, isCorrect, seconds)}
-              showReward
-            >
-              <Button onClick={quiz.next} autoFocus className="mt-2 w-full">
-                {quiz.isLast ? 'Xem kết quả' : 'Câu tiếp theo'}
-              </Button>
-            </QuestionSheet>
+            {/* Câu chọn đáp án và câu ghép tiếng nhận cùng bộ prop; mỗi câu có key riêng nên trạng thái được làm mới theo câu */}
+            {question.type === 'build' ? (
+              <BuildSyllable
+                question={question}
+                wrongHint={wrongHint}
+                onSolved={quiz.markSolved}
+                onAttempt={(isCorrect, seconds) => onAttempt?.(question.id, isCorrect, seconds)}
+                showReward
+              >
+                {nextButton}
+              </BuildSyllable>
+            ) : (
+              <QuestionSheet
+                question={question}
+                wrongHint={wrongHint}
+                onSolved={quiz.markSolved}
+                onAttempt={(isCorrect, seconds) => onAttempt?.(question.id, isCorrect, seconds)}
+                showReward
+              >
+                {nextButton}
+              </QuestionSheet>
+            )}
           </motion.div>
         </AnimatePresence>
       </PaperStack>

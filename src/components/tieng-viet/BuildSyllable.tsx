@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import SolvedFeedback from '@/components/learn/SolvedFeedback'
-import SpeakButton from '@/components/math/SpeakButton'
+import SpeakButton from '@/components/learn/SpeakButton'
 import ReadingVisualView from '@/components/tieng-viet/ReadingVisualView'
 import NotebookPage from '@/components/ui/NotebookPage'
 import { buttonClasses } from '@/components/ui/buttonStyles'

@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion, type Variants } from 'framer-motion'
-import TopicMark from '@/components/math/TopicMark'
+import TopicMark from '@/components/learn/TopicMark'
 import ButtonLink from '@/components/ui/ButtonLink'
 import { PenTick } from '@/components/ui/Icons'
 import type { GradeInfo, Topic } from '@/types/math'

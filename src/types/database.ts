@@ -1,6 +1,6 @@
 // Kiểu dữ liệu các bảng Supabase, viết tay khớp với supabase/migrations/20261022000000_init.sql.
 // Nếu đổi schema, sửa cả file này (hoặc sinh lại bằng `npx supabase gen types typescript`).
-import type { LessonIntro, QuestionVisual } from './math'
+import type { LessonIntroItem, LessonVisual } from './lesson'
 
 type UserRow = {
   id: string
@@ -26,7 +26,7 @@ type TopicRow = {
   title: string
   mark: string
   description: string
-  intro: LessonIntro[]
+  intro: LessonIntroItem[]
 }
 
 type ExerciseRow = {
@@ -40,7 +40,7 @@ type ExerciseRow = {
   options: string[]
   type: 'multiple_choice' | 'drag_drop' | 'fill_blank'
   difficulty: number
-  visual: QuestionVisual | null
+  visual: LessonVisual | null
   explain: string
   image_url: string | null
   audio_url: string | null

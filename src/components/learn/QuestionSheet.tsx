@@ -5,12 +5,14 @@ import { useAnswerAttempt } from '@/hooks/useAnswerAttempt'
 import SolvedFeedback from '@/components/learn/SolvedFeedback'
 import NotebookPage from '@/components/ui/NotebookPage'
 import AnswerOption, { type AnswerState } from './AnswerOption'
-import CountingVisual from './CountingVisual'
+import LessonVisualView from './LessonVisualView'
 import SpeakButton from './SpeakButton'
-import type { Question } from '@/types/math'
+import type { ChoiceQuestion } from '@/types/lesson'
 
 interface QuestionSheetProps {
-  question: Question
+  question: ChoiceQuestion
+  /** Lời nhắc nhẹ nhàng khi bé chọn sai, tùy môn */
+  wrongHint: string
   onSolved?: (firstTry: boolean) => void
   /** Gọi sau mỗi lần chọn, kèm số giây suy nghĩ kể từ lần chọn trước */
   onAttempt?: (isCorrect: boolean, seconds: number) => void
@@ -20,7 +22,7 @@ interface QuestionSheetProps {
   children?: React.ReactNode
 }
 
-export default function QuestionSheet({ question, onSolved, onAttempt, showReward = false, children }: QuestionSheetProps) {
+export default function QuestionSheet({ question, wrongHint, onSolved, onAttempt, showReward = false, children }: QuestionSheetProps) {
   // Mốc thời gian để đo bé suy nghĩ bao lâu cho mỗi lần chọn
   const lastAttemptAt = useRef<number | null>(null)
   useEffect(() => {
@@ -50,7 +52,7 @@ export default function QuestionSheet({ question, onSolved, onAttempt, showRewar
       </div>
 
       <div className="my-5">
-        <CountingVisual visual={question.visual} />
+        <LessonVisualView visual={question.visual} />
       </div>
 
       <div className={`grid gap-3 md:gap-4 ${columns}`}>
@@ -64,7 +66,7 @@ export default function QuestionSheet({ question, onSolved, onAttempt, showRewar
         firstTry={firstTry}
         showReward={showReward}
         explain={question.explain}
-        wrongHint="Chưa đúng, bé đếm lại rồi chọn tiếp nhé."
+        wrongHint={wrongHint}
         hasWrong={wrongPicks.length > 0}
       >
         {children}
