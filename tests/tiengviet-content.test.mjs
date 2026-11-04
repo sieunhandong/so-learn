@@ -76,6 +76,16 @@ test('câu chọn đáp án: 2–4 lựa chọn không trùng, đáp án nằm t
   }
 })
 
+test('câu nghe chọn chữ (listen) có 3–4 lựa chọn (spec mục 5)', () => {
+  for (const lesson of lessons) {
+    lesson.exercises.forEach((ex, i) => {
+      if (ex.visual.kind !== 'listen') return
+      const n = ex.options.length
+      assert.ok(n >= 3 && n <= 4, `${where(lesson)}, câu ${i + 1}: ${n} lựa chọn`)
+    })
+  }
+})
+
 test('từ bài 2, bài âm có cả dạng nghe và ghép tiếng, ít nhất 3 dạng; bài ôn tập ít nhất 3 dạng', () => {
   for (const lesson of lessons) {
     const kinds = new Set(lesson.exercises.map((ex) => ex.visual.kind))

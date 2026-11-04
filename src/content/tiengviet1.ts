@@ -168,7 +168,7 @@ export const tiengViet1Chapters: ReadingChapterSeed[] = [
           intro('Cá, gà, nhà: tiếng nào cũng có âm a.', scene([CA_FISH.emoji, GA_CHICKEN.emoji, NHA_HOUSE.emoji], 'Cá, gà, nhà.', ['cá', 'gà', 'nhà'])),
         ],
         exercises: [
-          listenEx('a', ['a', 'o']),
+          listenEx('a', ['o', 'e', 'u', 'a']),
           findPictureEx('a', CA_FISH, [{ emoji: '🐶', word: 'chó' }, { emoji: '🐝', word: 'ong' }], 0),
           listenEx('a', ['e', 'a', 'ô']),
           findPictureEx('a', GA_CHICKEN, [{ emoji: '🐱', word: 'mèo' }, { emoji: '🐘', word: 'voi' }], 1),
@@ -195,7 +195,7 @@ export const tiengViet1Chapters: ReadingChapterSeed[] = [
           pictureEx(BA_GRANDMA.emoji, 'bà', ['bà', 'ba']),
           findEx('b', 'bà', ['a', 'à', 'bà']),
           toneEx(BA_GRANDMA.emoji, 'bà', ['ngang', 'huyen']),
-          listenEx('bà', ['ba', 'bà']),
+          listenEx('bà', ['ba', 'bá', 'bà']),
           toneEx(BA_THREE.emoji, 'ba', ['ngang', 'huyen']),
           buildEx(BA_GRANDMA.emoji, 'bà', ['b'], ['a'], ['ngang', 'huyen']),
         ],
