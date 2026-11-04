@@ -29,3 +29,5 @@ export interface ReadingLessonSeed {
 export interface ReadingChapterSeed { number: number; title: string; lessons: ReadingLessonSeed[] }
 export interface SyllableParts { onset: string; rime: string; tone: Tone }
 export interface Learned { units: Set<string>; tones: Set<Tone> }
+/** Trạng thái giọng đọc tiếng Việt của trình duyệt: đang kiểm tra, có giọng vi, thiếu giọng vi, không hỗ trợ đọc */
+export type VoiceStatus = 'checking' | 'ready' | 'missing' | 'unsupported'
