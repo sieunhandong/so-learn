@@ -1,9 +1,11 @@
 // Trang tạm để nghe thử giọng đọc tiếng Việt của trình duyệt. Không gắn link từ trang nào, xóa ở Task 17.
 import SpeakButton from '@/components/math/SpeakButton'
+import BuildSyllable from '@/components/tieng-viet/BuildSyllable'
 import ReadingVisualView from '@/components/tieng-viet/ReadingVisualView'
 import VoiceStatusLine from '@/components/tieng-viet/VoiceStatusLine'
 import { PHASE1_UNITS, UNIT_SAY } from '@/content/tiengviet-sounds'
 import { toneLabel } from '@/lib/tiengviet'
+import type { BuildQuestion } from '@/types/lesson'
 import type { ReadingVisual } from '@/types/tiengviet'
 
 // Dấu thanh: đọc cả cụm "dấu ..." để nghe thử
@@ -56,6 +58,16 @@ const VISUAL_SAMPLES: { title: string; visual: ReadingVisual }[] = [
   },
 ]
 
+// Một câu ghép tiếng mẫu để thử ghép, rung khi sai, con dấu khi đúng
+const BUILD_SAMPLE: BuildQuestion = {
+  type: 'build',
+  id: 'thu-ghep-1',
+  prompt: 'Nghe rồi ghép thành tiếng.',
+  visual: { kind: 'build', emoji: '🐄', say: 'bò', onsets: ['b', 'c'], rimes: ['a', 'o'], tones: ['ngang', 'huyen', 'sac'] },
+  answer: 'bò',
+  explain: 'Bờ ghép với o được bo, thêm dấu huyền thành bò.',
+}
+
 export default function ThuGiongDocPage() {
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8">
@@ -76,6 +88,13 @@ export default function ThuGiongDocPage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="mt-6">
+        <h2 className="font-display text-2xl font-bold text-ink-deep">Ghép tiếng</h2>
+        <div className="mt-4">
+          <BuildSyllable question={BUILD_SAMPLE} wrongHint="Chưa đúng, bé ghép lại nhé." />
+        </div>
       </section>
 
       <section className="mt-6">

@@ -1,11 +1,9 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import { useAnswerAttempt } from '@/hooks/useAnswerAttempt'
-import { STARS_AFTER_RETRY, STARS_FIRST_TRY } from '@/lib/rewards'
+import SolvedFeedback from '@/components/learn/SolvedFeedback'
 import NotebookPage from '@/components/ui/NotebookPage'
-import RedStamp from '@/components/ui/RedStamp'
 import AnswerOption, { type AnswerState } from './AnswerOption'
 import CountingVisual from './CountingVisual'
 import SpeakButton from './SpeakButton'
@@ -61,27 +59,16 @@ export default function QuestionSheet({ question, onSolved, onAttempt, showRewar
         ))}
       </div>
 
-      <div aria-live="polite" className={`relative text-lg ${solved ? 'mt-5 min-h-28 pr-32' : 'mt-4'}`}>
-        <AnimatePresence>
-          {solved && (
-            <RedStamp
-              title="Đúng!"
-              note={showReward ? `+${firstTry ? STARS_FIRST_TRY : STARS_AFTER_RETRY} sao` : 'Giỏi quá'}
-              className="absolute -right-2 -top-4 md:-right-6"
-            />
-          )}
-        </AnimatePresence>
-        {solved ? (
-          <motion.p initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="text-graphite">
-            <strong className="text-leaf">Đúng rồi! </strong>
-            {question.explain}
-          </motion.p>
-        ) : (
-          wrongPicks.length > 0 && <p className="text-pencil">Chưa đúng, bé đếm lại rồi chọn tiếp nhé.</p>
-        )}
-      </div>
-
-      {solved && children}
+      <SolvedFeedback
+        solved={solved}
+        firstTry={firstTry}
+        showReward={showReward}
+        explain={question.explain}
+        wrongHint="Chưa đúng, bé đếm lại rồi chọn tiếp nhé."
+        hasWrong={wrongPicks.length > 0}
+      >
+        {children}
+      </SolvedFeedback>
     </>
   )
 

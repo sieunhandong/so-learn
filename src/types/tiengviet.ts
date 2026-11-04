@@ -28,6 +28,8 @@ export interface ReadingLessonSeed {
 }
 export interface ReadingChapterSeed { number: number; title: string; lessons: ReadingLessonSeed[] }
 export interface SyllableParts { onset: string; rime: string; tone: Tone }
+/** Ba ô trẻ đang ghép trong dạng bài ghép tiếng; null là ô còn trống */
+export interface BuildState { onset: string | null; rime: string | null; tone: Tone | null }
 export interface Learned { units: Set<string>; tones: Set<Tone> }
 /** Trạng thái giọng đọc tiếng Việt của trình duyệt: đang kiểm tra, có giọng vi, thiếu giọng vi, không hỗ trợ đọc */
 export type VoiceStatus = 'checking' | 'ready' | 'missing' | 'unsupported'
