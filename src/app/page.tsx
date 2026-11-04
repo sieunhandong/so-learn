@@ -9,6 +9,7 @@ import ParentFaq from '@/components/landing/ParentFaq'
 import ProblemGallery from '@/components/landing/ProblemGallery'
 import RewardsSection from '@/components/landing/RewardsSection'
 import SectionHeading, { Accent } from '@/components/landing/SectionHeading'
+import TiengVietTeaser from '@/components/landing/TiengVietTeaser'
 import AccountNav from '@/components/layout/AccountNav'
 import SiteFooter from '@/components/layout/SiteFooter'
 import SiteHeader from '@/components/layout/SiteHeader'
@@ -16,6 +17,7 @@ import ButtonLink from '@/components/ui/ButtonLink'
 import { PenTick } from '@/components/ui/Icons'
 import TiltCard from '@/components/ui/TiltCard'
 import { getTopics, grades, heroQuestion } from '@/lib/content'
+import { isTiengVietEnabled } from '@/lib/features'
 import type { GradeLevel, Topic } from '@/types/math'
 
 const promises = [
@@ -78,6 +80,8 @@ export default function HomePage() {
             <HeroPlayground question={heroQuestion} />
           </div>
         </section>
+
+        {isTiengVietEnabled() && <TiengVietTeaser />}
 
         <section className="bg-white">
           <div className={container}>

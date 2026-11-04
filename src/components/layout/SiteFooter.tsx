@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { grades } from '@/lib/content'
+import { isTiengVietEnabled } from '@/lib/features'
 
 /** Chân trang: chỉ có liên kết nội bộ, không dẫn ra ngoài */
 export default function SiteFooter() {
@@ -44,6 +45,13 @@ export default function SiteFooter() {
                 Chương trình 5 lớp
               </Link>
             </li>
+            {isTiengVietEnabled() && (
+              <li>
+                <Link href="/tieng-viet/1" className="text-white/80 transition-colors hover:text-white">
+                  Vở Tiếng Việt lớp 1
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
       </div>
