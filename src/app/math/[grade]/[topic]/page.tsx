@@ -51,7 +51,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
     )
   }
 
-  const [lesson, student] = await Promise.all([getLesson(topic), getActiveStudent()])
+  const [lesson, student] = await Promise.all([getLesson('math', topic), getActiveStudent()])
   if (!lesson || lesson.topic.grade !== info.level || lesson.questions.length === 0) notFound()
 
   return (

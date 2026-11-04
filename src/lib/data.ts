@@ -5,7 +5,7 @@ import { computeStats, summarizeAttempts, type AttemptRow, type ExerciseResult, 
 import { BADGES } from './rewards'
 import { toQuestion } from './questions'
 import type { Student, TopicRecord } from '@/types/database'
-import type { LessonQuestion } from '@/types/lesson'
+import type { LessonQuestion, Subject } from '@/types/lesson'
 
 /** Cookie ghi id của bé đang học trên máy này (chỉ là id, RLS vẫn kiểm tra quyền) */
 export const ACTIVE_STUDENT_COOKIE = 'so_learn_student'
@@ -62,12 +62,12 @@ export async function getActiveStudent(): Promise<Student | null> {
   return students.find(s => s.id === id) ?? students[0] ?? null
 }
 
-/** Mục lục một lớp: các chủ đề, mỗi chủ đề gồm các bài và id câu hỏi của bài */
-export async function getGradeOutline(grade: number): Promise<ChapterSummary[]> {
+/** Mục lục một lớp của một môn: các chủ đề, mỗi chủ đề gồm các bài và id câu hỏi của bài */
+export async function getGradeOutline(subject: Subject, grade: number): Promise<ChapterSummary[]> {
   const supabase = await createSupabase()
   const [topicsRes, exercisesRes] = await Promise.all([
-    supabase.from('topics').select('id, chapter_number, chapter_title, position, title, mark, description').eq('grade', grade).order('position'),
-    supabase.from('exercises').select('id, topic').eq('grade', grade).order('position'),
+    supabase.from('topics').select('id, chapter_number, chapter_title, position, title, mark, description').eq('subject', subject).eq('grade', grade).order('position'),
+    supabase.from('exercises').select('id, topic').eq('subject', subject).eq('grade', grade).order('position'),
   ])
   if (topicsRes.error) throw topicsRes.error
   if (exercisesRes.error) throw exercisesRes.error
@@ -87,11 +87,11 @@ export async function getGradeOutline(grade: number): Promise<ChapterSummary[]> 
   return chapters
 }
 
-/** Một bài học: thông tin bài và danh sách câu hỏi theo thứ tự */
-export async function getLesson(slug: string): Promise<{ topic: TopicRecord; questions: LessonQuestion[] } | null> {
+/** Một bài học của một môn: thông tin bài và danh sách câu hỏi theo thứ tự */
+export async function getLesson(subject: Subject, slug: string): Promise<{ topic: TopicRecord; questions: LessonQuestion[] } | null> {
   const supabase = await createSupabase()
   const [topicRes, exercisesRes] = await Promise.all([
-    supabase.from('topics').select('*').eq('id', slug).maybeSingle(),
+    supabase.from('topics').select('*').eq('subject', subject).eq('id', slug).maybeSingle(),
     supabase.from('exercises').select('*').eq('topic', slug).order('position'),
   ])
   if (topicRes.error) throw topicRes.error
@@ -130,18 +130,33 @@ export async function getStudentOverview(studentId: string): Promise<StudentOver
   return { stats: computeStats(attempts, new Date()), results: summarizeAttempts(attempts), earnedBadges }
 }
 
-async function countGradeExercises(grade: number): Promise<number> {
+/** Id mọi câu hỏi của một lớp trong một môn */
+export async function getExerciseIds(subject: Subject, grade: number): Promise<string[]> {
   const supabase = await createSupabase()
-  const { count, error } = await supabase.from('exercises').select('id', { count: 'exact', head: true }).eq('grade', grade)
-  if (error) throw error
-  return count ?? 0
+  const ids: string[] = []
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from('exercises')
+      .select('id')
+      .eq('subject', subject)
+      .eq('grade', grade)
+      .order('id')
+      .range(from, from + PAGE_SIZE - 1)
+    if (error) throw error
+    ids.push(...data.map(e => e.id))
+    if (data.length < PAGE_SIZE) return ids
+  }
 }
 
 /** Xét và trao các huy hiệu mới đạt được. Trả về tên các huy hiệu vừa nhận. */
 export async function awardBadges(studentId: string): Promise<string[]> {
-  const [attempts, earned, gradeTotal] = await Promise.all([getAttempts(studentId), getEarnedBadges(studentId), countGradeExercises(1)])
+  const [attempts, earned, ids] = await Promise.all([getAttempts(studentId), getEarnedBadges(studentId), getExerciseIds('math', 1)])
   const stats = computeStats(attempts, new Date())
-  const fresh = BADGES.filter(b => !earned.has(b.type) && b.earned({ ...stats, gradeTotal }))
+  // Huy hiệu "Xong toán lớp 1" chỉ đếm câu Toán lớp 1, không tính câu của môn khác
+  const results = summarizeAttempts(attempts)
+  const gradeTotal = ids.length
+  const gradeSolved = ids.filter(id => results.get(id)?.solved).length
+  const fresh = BADGES.filter(b => !earned.has(b.type) && b.earned({ ...stats, gradeTotal, gradeSolved }))
   if (fresh.length === 0) return []
 
   const supabase = await createSupabase()

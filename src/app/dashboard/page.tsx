@@ -29,7 +29,7 @@ export default async function DashboardPage() {
   const student = await getActiveStudent()
   if (!student) redirect('/parent')
 
-  const [outline, overview] = await Promise.all([getGradeOutline(1), getStudentOverview(student.id)])
+  const [outline, overview] = await Promise.all([getGradeOutline('math', 1), getStudentOverview(student.id)])
   const { stats, results, earnedBadges } = overview
   const states = lessonStates(outline, results)
   const next = nextLesson(states)

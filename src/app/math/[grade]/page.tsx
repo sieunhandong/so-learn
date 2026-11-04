@@ -117,7 +117,7 @@ function statusOf(s: LessonState, hasStudent: boolean): LessonStatus {
 
 /** Lớp 1: mục lục từ database, có tiến độ và khóa bài khi có bé đang học */
 async function GradeOne({ info }: { info: GradeInfo }) {
-  const [outline, student] = await Promise.all([getGradeOutline(1), getActiveStudent()])
+  const [outline, student] = await Promise.all([getGradeOutline('math', 1), getActiveStudent()])
   const results = student ? (await getStudentOverview(student.id)).results : null
   const states = lessonStates(outline, results)
   const { solved, total } = sumProgress(states)

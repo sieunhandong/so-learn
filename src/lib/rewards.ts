@@ -10,8 +10,10 @@ export interface BadgeCheck {
   stars: number
   solvedCount: number
   streakDays: number
-  /** Tổng số câu của lớp 1 */
+  /** Tổng số câu Toán lớp 1 */
   gradeTotal: number
+  /** Số câu Toán lớp 1 đã giải */
+  gradeSolved: number
 }
 
 export interface BadgeDefinition {
@@ -27,7 +29,7 @@ export const BADGES: BadgeDefinition[] = [
   { type: 'solved_10', mark: '10', label: '10 câu đã giải', earned: s => s.solvedCount >= 10 },
   { type: 'streak_3', mark: '3', label: '3 ngày học liền', earned: s => s.streakDays >= 3 },
   { type: 'stars_50', mark: '50', label: '50 sao', earned: s => s.stars >= 50 },
-  { type: 'grade1_done', mark: 'L1', label: 'Xong toán lớp 1', earned: s => s.gradeTotal > 0 && s.solvedCount >= s.gradeTotal },
+  { type: 'grade1_done', mark: 'L1', label: 'Xong toán lớp 1', earned: s => s.gradeTotal > 0 && s.gradeSolved >= s.gradeTotal },
 ]
 
 export function medalCount(firstTryCount: number, total: number): number {

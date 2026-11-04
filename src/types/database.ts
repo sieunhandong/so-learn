@@ -1,6 +1,6 @@
-// Kiểu dữ liệu các bảng Supabase, viết tay khớp với supabase/migrations/20261022000000_init.sql.
+// Kiểu dữ liệu các bảng Supabase, viết tay khớp với supabase/migrations (init.sql và subject.sql).
 // Nếu đổi schema, sửa cả file này (hoặc sinh lại bằng `npx supabase gen types typescript`).
-import type { LessonIntroItem, LessonVisual } from './lesson'
+import type { LessonIntroItem, LessonVisual, Subject } from './lesson'
 
 type UserRow = {
   id: string
@@ -19,6 +19,7 @@ type StudentRow = {
 
 type TopicRow = {
   id: string
+  subject: Subject
   grade: number
   chapter_number: number
   chapter_title: string
@@ -32,6 +33,7 @@ type TopicRow = {
 type ExerciseRow = {
   id: string
   slug: string
+  subject: Subject
   grade: number
   topic: string
   position: number
