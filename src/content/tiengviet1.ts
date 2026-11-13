@@ -160,6 +160,22 @@ const DE_CRICKET: PictureWord = { emoji: '🦗', word: 'dế' }
 const DO_BOAT: PictureWord = { emoji: '🛶', word: 'đò' }
 const CO_FLAG: PictureWord = { emoji: '🚩', word: 'cờ' }
 const BO_AVOCADO: PictureWord = { emoji: '🥑', word: 'bơ' }
+/** Quả bí ngô (miền Nam gọi là bí đỏ); trẻ gọi "quả bí" */
+const BI_PUMPKIN: PictureWord = { emoji: '🎃', word: 'bí' }
+/** Trẻ có thể gọi là thằn lằn, nên chỉ dùng khi có chữ bên dưới hoặc lựa chọn loại trừ được */
+const KI_DA_LIZARD: PictureWord = { emoji: '🦎', word: 'kì đà' }
+/** Con hổ (miền Nam gọi là cọp) */
+const HO_TIGER: PictureWord = { emoji: '🐯', word: 'hổ' }
+const LA_LEAF: PictureWord = { emoji: '🍁', word: 'lá' }
+const LE_PEAR: PictureWord = { emoji: '🍐', word: 'lê' }
+/** Chú hề */
+const HE_CLOWN: PictureWord = { emoji: '🤡', word: 'hề' }
+/** Con cú (cú mèo) */
+const CU_OWL: PictureWord = { emoji: '🦉', word: 'cú' }
+const CHO_DOG: PictureWord = { emoji: '🐶', word: 'chó' }
+const KHI_MONKEY: PictureWord = { emoji: '🐒', word: 'khỉ' }
+/** Cuộn chỉ */
+const CHI_THREAD: PictureWord = { emoji: '🧵', word: 'chỉ' }
 
 // ---------- Chương trình ----------
 
@@ -456,6 +472,181 @@ export const tiengViet1Chapters: ReadingChapterSeed[] = [
           pictureEx(DE_CRICKET.emoji, 'dế', ['dê', 'đế', 'dế', 'bế']),
           findEx('d', 'dỗ', ['đỏ', 'dỗ', 'bơ']),
           buildEx(BO_AVOCADO.emoji, 'bơ', ['b', 'c', 'd', 'đ'], ['o', 'ô', 'ơ'], ['ngang', 'huyen', 'sac', 'nga']),
+        ],
+      },
+    ],
+  },
+  {
+    number: 3,
+    title: 'Âm và chữ: i, k, h, l, u, ư, ch, kh',
+    lessons: [
+      {
+        number: 11,
+        slug: 'tv1-bai-11',
+        title: 'I i, K k',
+        mark: 'Ik',
+        description: 'Học chữ i, k, đánh vần bí, kì',
+        teaches: { units: ['i', 'k'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có chữ i hoặc chữ k.',
+            scene(['👧', '📏', '📒'], 'Bé kẻ ô li thật kĩ.', ['kẻ', 'li', 'kĩ']),
+          ),
+          intro('Chữ i có một chấm nhỏ ở trên. Bé bấm vào chữ để nghe.', letter('i')),
+          intro('Chữ k đọc là ca. Chữ k chỉ đứng trước i, e, ê. Bé bấm vào chữ để nghe.', letter('k')),
+          intro(
+            'Bé đánh vần: bờ, i, bi, sắc, bí. Ca, i, ki, huyền, kì.',
+            { kind: 'spell', steps: [...spell('b', 'i', 'sac'), ...spell('k', 'i', 'huyen')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [BI_PUMPKIN, KI_DA_LIZARD] }),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Kì đà bò ở bờ đê.', highlight: ['kì'] }),
+        ],
+        exercises: [
+          listenEx('i', ['e', 'i', 'ê', 'a']),
+          // Lựa chọn sai không có tiếng mở đầu bằng c, vì c và k cùng đọc là "cờ" khi ghép
+          findEx('k', 'kẻ', ['bé', 'đỏ', 'kẻ']),
+          listenEx('kể', ['kể', 'kẻ', 'kệ']),
+          toneEx(BI_PUMPKIN.emoji, 'bí', ['huyen', 'nang', 'sac', 'hoi']),
+          findEx('i', 'dì', ['dì', 'dê', 'đò', 'bố']),
+          pictureEx(KI_DA_LIZARD.emoji, 'kì đà', ['bờ đê', 'kì đà', 'bí đỏ']),
+          // Có cả mảnh c, k và các vần i, e (đi sau k), a, o (đi sau c) để bé luyện chính tả c/k
+          buildEx(BI_PUMPKIN.emoji, 'bí', ['b', 'c', 'd', 'k'], ['a', 'e', 'i', 'o'], ['ngang', 'huyen', 'sac', 'hoi']),
+        ],
+      },
+      {
+        number: 12,
+        slug: 'tv1-bai-12',
+        title: 'H h, L l',
+        mark: 'Hl',
+        description: 'Học chữ h, l, đánh vần hổ, lá',
+        teaches: { units: ['h', 'l'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có âm h hoặc âm l.',
+            scene(['👧', '👵', '🍂'], 'Bé cùng bà ra hồ, lá vàng rơi lả tả.', ['hồ', 'lá', 'lả']),
+          ),
+          intro('Chữ h đọc là hờ. Bé bấm vào chữ để nghe.', letter('h')),
+          intro('Chữ l đọc là lờ. Bé bấm vào chữ để nghe.', letter('l')),
+          intro(
+            'Bé đánh vần: hờ, ô, hô, hỏi, hổ. Lờ, a, la, sắc, lá.',
+            { kind: 'spell', steps: [...spell('h', 'ô', 'hoi'), ...spell('l', 'a', 'sac')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [HO_TIGER, LA_LEAF, LE_PEAR, HE_CLOWN] }),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Dì Hà bổ lê.', highlight: ['hà', 'lê'] }),
+        ],
+        exercises: [
+          listenEx('h', ['k', 'b', 'l', 'h']),
+          pictureEx(HO_TIGER.emoji, 'hổ', ['hổ', 'hồ', 'lọ']),
+          findEx('l', 'lò', ['bò', 'hồ', 'lò']),
+          toneEx(LE_PEAR.emoji, 'lê', ['huyen', 'ngang', 'nga', 'sac']),
+          listenEx('lọ', ['lò', 'lỗ', 'lọ', 'lo']),
+          findEx('h', 'hè', ['hè', 'lê', 'bí', 'kẻ']),
+          pictureEx(LA_LEAF.emoji, 'lá', ['lê', 'lá', 'đá']),
+          buildEx(HE_CLOWN.emoji, 'hề', ['c', 'h', 'k', 'l'], ['a', 'e', 'ê', 'ô'], ['ngang', 'huyen', 'sac', 'hoi']),
+        ],
+      },
+      {
+        number: 13,
+        slug: 'tv1-bai-13',
+        title: 'U u, Ư ư',
+        mark: 'Uư',
+        description: 'Học chữ u, ư, đánh vần cú, dữ',
+        teaches: { units: ['u', 'ư'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có âm u hoặc âm ư.',
+            scene([CU_OWL.emoji, '👀', '👧'], 'Chú cú có đôi mắt to tròn, cứ nhìn bé mãi.', ['chú', 'cú', 'cứ']),
+          ),
+          intro('Đây là chữ u: U hoa và u thường. Bé bấm vào chữ để nghe.', letter('u')),
+          intro('Chữ ư là chữ u thêm râu. Bé bấm vào chữ để nghe.', letter('ư')),
+          intro(
+            'Bé đánh vần: cờ, u, cu, sắc, cú. Dờ, ư, dư, ngã, dữ.',
+            { kind: 'spell', steps: [...spell('c', 'u', 'sac'), ...spell('d', 'ư', 'nga')] },
+          ),
+          // Chưa có tranh rõ nghĩa cho một tiếng có ư, nên dùng cụm "hổ dữ"
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [CU_OWL, { emoji: '🐅', word: 'hổ dữ' }] }),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Bé đi đò, cụ cứ lo.', highlight: ['cụ', 'cứ'] }),
+        ],
+        exercises: [
+          listenEx('ư', ['o', 'u', 'ơ', 'ư']),
+          findEx('u', 'bú', ['bố', 'bú', 'bơ']),
+          toneEx(CU_OWL.emoji, 'cú', ['sac', 'nga', 'nang', 'huyen']),
+          listenEx('củ', ['cổ', 'cử', 'củ', 'cỏ']),
+          pictureEx(HE_CLOWN.emoji, 'hề', ['hư', 'hề', 'hú']),
+          findEx('ư', 'dữ', ['dữ', 'dễ', 'đỗ']),
+          listenEx('u', ['ư', 'ô', 'u']),
+          buildEx(CU_OWL.emoji, 'cú', ['c', 'h', 'k', 'l'], ['i', 'ô', 'u', 'ư'], ['ngang', 'huyen', 'sac', 'nga']),
+        ],
+      },
+      {
+        number: 14,
+        slug: 'tv1-bai-14',
+        title: 'Ch ch, Kh kh',
+        mark: 'Ch',
+        description: 'Học chữ ch, kh, đánh vần chó, khỉ',
+        teaches: { units: ['ch', 'kh'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có âm ch hoặc âm kh.',
+            scene(
+              [KHI_MONKEY.emoji, CHO_DOG.emoji, '😆'],
+              'Chú khỉ con trêu chú chó, cả nhà cười khúc khích.',
+              ['chú', 'khỉ', 'chó', 'khúc', 'khích'],
+            ),
+          ),
+          intro('Chữ ch ghép từ c và h, đọc là chờ. Bé bấm vào chữ để nghe.', letter('ch')),
+          intro('Chữ kh ghép từ k và h, đọc là khờ. Bé bấm vào chữ để nghe.', letter('kh')),
+          intro(
+            'Bé đánh vần: chờ, o, cho, sắc, chó. Khờ, i, khi, hỏi, khỉ.',
+            { kind: 'spell', steps: [...spell('ch', 'o', 'sac'), ...spell('kh', 'i', 'hoi')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [CHO_DOG, KHI_MONKEY, CHI_THREAD] }),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Bà kho cá, chị đi chợ.', highlight: ['kho', 'chị', 'chợ'] }),
+        ],
+        exercises: [
+          listenEx('kh', ['ch', 'h', 'kh', 'k']),
+          pictureEx(CHO_DOG.emoji, 'chó', ['chó', 'cò', 'khô']),
+          findEx('kh', 'khế', ['chè', 'khế', 'kê']),
+          toneEx(KHI_MONKEY.emoji, 'khỉ', ['huyen', 'sac', 'hoi', 'nang']),
+          listenEx('chị', ['khi', 'kì', 'chỉ', 'chị']),
+          findEx('ch', 'chợ', ['chợ', 'khô', 'cờ', 'hồ']),
+          pictureEx(CHI_THREAD.emoji, 'chỉ', ['khỉ', 'chì', 'chỉ']),
+          buildEx(KHI_MONKEY.emoji, 'khỉ', ['c', 'ch', 'k', 'kh'], ['a', 'i', 'o', 'u'], ['ngang', 'huyen', 'sac', 'hoi']),
+        ],
+      },
+      {
+        number: 15,
+        slug: 'tv1-bai-15',
+        title: 'Ôn tập',
+        mark: 'Ôn',
+        description: 'Ôn lại chữ i, k, h, l, u, ư, ch, kh',
+        teaches: { units: [], tones: [] },
+        intro: [
+          // Tám chữ chia hai thẻ theo thứ tự đã học, để chữ to không bị xuống quá nhiều dòng
+          intro(
+            'Bé đã học thêm tám chữ. Đây là bốn chữ đầu: i, k, h, l. Bé bấm để nghe lại.',
+            { kind: 'letter', letters: ['i', 'k', 'h', 'l'], say: ['i', 'k', 'h', 'l'].map(sayOf).join(', ') },
+          ),
+          intro(
+            'Còn đây là bốn chữ sau: u, ư, ch, kh. Bé bấm để nghe lại.',
+            { kind: 'letter', letters: ['u', 'ư', 'ch', 'kh'], say: ['u', 'ư', 'ch', 'kh'].map(sayOf).join(', ') },
+          ),
+          intro(
+            'Bé nhớ: k đứng trước i, e, ê, như kẻ. Còn c đứng trước a, o, ô, ơ, u, ư, như cú.',
+            { kind: 'spell', steps: [...spell('k', 'e', 'hoi'), ...spell('c', 'u', 'sac')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [BI_PUMPKIN, LE_PEAR, CU_OWL, KHI_MONKEY] }),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Chú khỉ đi chợ. Chợ có lê, có bí.', highlight: [] }),
+        ],
+        exercises: [
+          listenEx('kì', ['khi', 'chì', 'kì', 'dì']),
+          pictureEx(CU_OWL.emoji, 'cú', ['cú', 'cụ', 'củ']),
+          findEx('kh', 'khô', ['chó', 'hồ', 'khô']),
+          toneEx(HO_TIGER.emoji, 'hổ', ['nang', 'hoi', 'huyen', 'sac']),
+          listenEx('đủ', ['đỏ', 'đi', 'đu', 'đủ']),
+          findEx('k', 'kể', ['chè', 'kể', 'lá', 'hồ']),
+          toneEx(CHI_THREAD.emoji, 'chỉ', ['hoi', 'huyen', 'sac', 'nang']),
+          buildEx(LA_LEAF.emoji, 'lá', ['ch', 'h', 'kh', 'l'], ['a', 'ê', 'u', 'ư'], ['ngang', 'sac', 'hoi', 'nga']),
         ],
       },
     ],
