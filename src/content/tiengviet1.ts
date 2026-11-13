@@ -958,7 +958,8 @@ export const tiengViet1Chapters: ReadingChapterSeed[] = [
           findEx('t', 'tủ', ['tủ', 'củ', 'đủ']),
           // Không có "tô" trong lựa chọn vì chén trà trông giống cái tô
           pictureEx(TRA_TEA.emoji, 'trà', ['tre', 'trà', 'trê']),
-          buildEx(TRE_BAMBOO.emoji, 'tre', ['ch', 'r', 't', 'tr'], ['a', 'e', 'ê', 'ô'], ['ngang', 'huyen', 'sac', 'hoi']),
+          // Hàng âm đầu không có ch: giọng đọc miền Bắc đọc tr giống ch, nghe "tre" bé có thể ghép ra "che"
+          buildEx(TRE_BAMBOO.emoji, 'tre', ['h', 'r', 't', 'tr'], ['a', 'e', 'ê', 'ô'], ['ngang', 'huyen', 'sac', 'hoi']),
         ],
       },
       {
