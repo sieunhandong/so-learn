@@ -80,10 +80,12 @@ function checkFind(prompt: string, unit: string, answer: string, others: string[
 
 /** Dạng 1: nghe đọc một âm/chữ hoặc một tiếng, chọn chữ đúng. Lựa chọn gây nhiễu được phép là chữ chưa học */
 function listenEx(answer: string, options: string[]): ReadingExerciseSeed {
+  // Đáp án là âm/chữ đang dạy (có trong UNIT_SAY) thì gọi là "chữ"; còn lại là một tiếng, như cách gọi của sách
+  const isUnit = Object.hasOwn(UNIT_SAY, answer)
   return choice(
     'Bé bấm loa, nghe rồi chọn chữ đúng.',
     { kind: 'listen', say: UNIT_SAY[answer] ?? answer },
-    answer, options, `Đó là chữ ${answer}.`,
+    answer, options, isUnit ? `Đó là chữ ${answer}.` : `Đó là tiếng ${answer}.`,
   )
 }
 
@@ -162,7 +164,7 @@ const CO_FLAG: PictureWord = { emoji: '🚩', word: 'cờ' }
 const BO_AVOCADO: PictureWord = { emoji: '🥑', word: 'bơ' }
 /** Quả bí ngô (miền Nam gọi là bí đỏ); trẻ gọi "quả bí" */
 const BI_PUMPKIN: PictureWord = { emoji: '🎃', word: 'bí' }
-/** Trẻ có thể gọi là thằn lằn, nên chỉ dùng khi có chữ bên dưới hoặc lựa chọn loại trừ được */
+/** Trẻ thường gọi tranh này là thằn lằn hay tắc kè, nên chỉ dùng ở thẻ Từ ngữ (có chữ bên dưới), không dùng làm đáp án câu "Tranh vẽ gì?" */
 const KI_DA_LIZARD: PictureWord = { emoji: '🦎', word: 'kì đà' }
 /** Con hổ (miền Nam gọi là cọp) */
 const HO_TIGER: PictureWord = { emoji: '🐯', word: 'hổ' }
@@ -508,7 +510,8 @@ export const tiengViet1Chapters: ReadingChapterSeed[] = [
           listenEx('kể', ['kể', 'kẻ', 'kệ']),
           toneEx(BI_PUMPKIN.emoji, 'bí', ['huyen', 'nang', 'sac', 'hoi']),
           findEx('i', 'dì', ['dì', 'dê', 'đò', 'bố']),
-          pictureEx(KI_DA_LIZARD.emoji, 'kì đà', ['bờ đê', 'kì đà', 'bí đỏ']),
+          pictureEx(DE_GOAT.emoji, 'dê', ['dì', 'dê', 'đi']),
+          // 🎃 dùng cho cả câu dấu thanh và câu ghép tiếng vì rất ít tranh rõ nghĩa cho tiếng có i chỉ dùng chữ đã học.
           // Có cả mảnh c, k và các vần i, e (đi sau k), a, o (đi sau c) để bé luyện chính tả c/k
           buildEx(BI_PUMPKIN.emoji, 'bí', ['b', 'c', 'd', 'k'], ['a', 'e', 'i', 'o'], ['ngang', 'huyen', 'sac', 'hoi']),
         ],
@@ -575,6 +578,7 @@ export const tiengViet1Chapters: ReadingChapterSeed[] = [
           pictureEx(HE_CLOWN.emoji, 'hề', ['hư', 'hề', 'hú']),
           findEx('ư', 'dữ', ['dữ', 'dễ', 'đỗ']),
           listenEx('u', ['ư', 'ô', 'u']),
+          // 🦉 dùng cho cả câu dấu thanh và câu ghép tiếng vì gần như không có tranh rõ nghĩa cho tiếng có u, ư chỉ dùng chữ đã học
           buildEx(CU_OWL.emoji, 'cú', ['c', 'h', 'k', 'l'], ['i', 'ô', 'u', 'ư'], ['ngang', 'huyen', 'sac', 'nga']),
         ],
       },
@@ -605,13 +609,13 @@ export const tiengViet1Chapters: ReadingChapterSeed[] = [
         ],
         exercises: [
           listenEx('kh', ['ch', 'h', 'kh', 'k']),
-          pictureEx(CHO_DOG.emoji, 'chó', ['chó', 'cò', 'khô']),
+          pictureEx(CO_FLAG.emoji, 'cờ', ['cờ', 'chờ', 'khờ']),
           findEx('kh', 'khế', ['chè', 'khế', 'kê']),
           toneEx(KHI_MONKEY.emoji, 'khỉ', ['huyen', 'sac', 'hoi', 'nang']),
           listenEx('chị', ['khi', 'kì', 'chỉ', 'chị']),
           findEx('ch', 'chợ', ['chợ', 'khô', 'cờ', 'hồ']),
           pictureEx(CHI_THREAD.emoji, 'chỉ', ['khỉ', 'chì', 'chỉ']),
-          buildEx(KHI_MONKEY.emoji, 'khỉ', ['c', 'ch', 'k', 'kh'], ['a', 'i', 'o', 'u'], ['ngang', 'huyen', 'sac', 'hoi']),
+          buildEx(CHO_DOG.emoji, 'chó', ['c', 'ch', 'k', 'kh'], ['a', 'i', 'o', 'u'], ['ngang', 'huyen', 'sac', 'hoi']),
         ],
       },
       {
