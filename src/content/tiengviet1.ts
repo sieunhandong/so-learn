@@ -422,7 +422,7 @@ export const tiengViet1Chapters: ReadingChapterSeed[] = [
           pictureEx(BO_AVOCADO.emoji, 'bơ', ['bò', 'bố', 'bơ']),
           findEx('ơ', 'cờ', ['cờ', 'cô', 'cò', 'cá']),
           toneEx(CO_FLAG.emoji, 'cờ', ['nga', 'hoi', 'sac', 'huyen']),
-          listenEx('đỗ', ['đổ', 'đỗ', 'đồ', 'đố']),
+          listenEx('đỗ', ['độ', 'đỗ', 'đồ', 'đố']),
           findEx('ơ', 'đỡ', ['đỡ', 'đỗ', 'dễ', 'bò']),
           toneEx(BO_AVOCADO.emoji, 'bơ', ['hoi', 'nang', 'ngang', 'nga']),
           buildEx(CO_FLAG.emoji, 'cờ', ['b', 'c', 'đ'], ['a', 'o', 'ô', 'ơ'], ['ngang', 'huyen', 'hoi', 'nga']),
