@@ -195,6 +195,24 @@ const NGO_CORN: PictureWord = { emoji: '🌽', word: 'ngô' }
 const NGU_SLEEP: PictureWord = { emoji: '😴', word: 'ngủ' }
 /** Mặt đang suy nghĩ */
 const NGHI_THINK: PictureWord = { emoji: '🤔', word: 'nghĩ' }
+/** Quyển sổ có gáy xoắn */
+const SO_NOTEBOOK: PictureWord = { emoji: '📒', word: 'sổ' }
+/** Mặt hét lên vì sợ */
+const SO_SCARED: PictureWord = { emoji: '😱', word: 'sợ' }
+const O_TO_CAR: PictureWord = { emoji: '🚗', word: 'ô tô' }
+const SU_TU_LION: PictureWord = { emoji: '🦁', word: 'sư tử' }
+/** Chén trà (miền Bắc còn gọi là chè) */
+const TRA_TEA: PictureWord = { emoji: '🍵', word: 'trà' }
+/** Cành tre; trẻ có thể chưa nhận ra, nên chỉ dùng ở thẻ Từ ngữ (có chữ) và câu ghép tiếng (có loa đọc) */
+const TRE_BAMBOO: PictureWord = { emoji: '🎋', word: 'tre' }
+const THO_RABBIT: PictureWord = { emoji: '🐰', word: 'thỏ' }
+/** Cái thìa (miền Nam gọi là muỗng) */
+const THIA_SPOON: PictureWord = { emoji: '🥄', word: 'thìa' }
+/** Đĩa nhạc */
+const DIA_DISC: PictureWord = { emoji: '💿', word: 'đĩa' }
+const CUA_CRAB: PictureWord = { emoji: '🦀', word: 'cua' }
+const RUA_TURTLE: PictureWord = { emoji: '🐢', word: 'rùa' }
+const DUA_COCONUT: PictureWord = { emoji: '🥥', word: 'dừa' }
 
 // ---------- Chương trình ----------
 
@@ -858,6 +876,206 @@ export const tiengViet1Chapters: ReadingChapterSeed[] = [
           listenEx('nghe', ['nghe', 'ghe', 'khe']),
           // Có cả g, gh, ng, ngh với vần trước và sau (a, o / e, i) để luyện chính tả g/gh, ng/ngh
           buildEx(GA_CHICKEN.emoji, 'gà', ['g', 'gh', 'ng', 'ngh'], ['a', 'e', 'i', 'o'], ['ngang', 'huyen', 'sac', 'hoi']),
+        ],
+      },
+    ],
+  },
+  {
+    number: 5,
+    title: 'Âm và chữ: r, s, t, tr, th, ia, ua, ưa',
+    lessons: [
+      {
+        number: 21,
+        slug: 'tv1-bai-21',
+        title: 'R r, S s',
+        mark: 'Rs',
+        description: 'Học chữ r, s, đánh vần rổ, sổ',
+        teaches: { units: ['r', 's'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có âm r hoặc âm s.',
+            scene(['🌅', '👧', '🌱'], 'Sáng sớm, bé theo bà ra vườn tưới rau.', ['sáng', 'sớm', 'ra', 'rau']),
+          ),
+          intro('Chữ r đọc là rờ. Bé bấm vào chữ để nghe.', letter('r')),
+          intro('Chữ s đọc là sờ. Bé bấm vào chữ để nghe.', letter('s')),
+          intro(
+            'Bé đánh vần: rờ, ô, rô, hỏi, rổ. Sờ, ô, sô, hỏi, sổ.',
+            { kind: 'spell', steps: [...spell('r', 'ô', 'hoi'), ...spell('s', 'ô', 'hoi')] },
+          ),
+          // Cá rô dùng chung tranh cá; có chữ bên dưới nên chỉ dùng ở thẻ Từ ngữ.
+          // Không dùng 🧺 cho "rổ" vì bài 17 đã gọi tranh này là "giỏ"
+          intro(
+            'Bé đọc từng từ, rồi bấm vào tranh để nghe lại.',
+            { kind: 'pictures', items: [{ emoji: CA_FISH.emoji, word: 'cá rô' }, SO_NOTEBOOK, SO_SCARED] },
+          ),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Bé rủ bà ra bờ hồ. Hồ có cá rô.', highlight: ['rủ', 'ra', 'rô'] }),
+        ],
+        exercises: [
+          // Câu nghe không đặt r cạnh d, gi (nhiều vùng đọc giống nhau)
+          listenEx('r', ['l', 'h', 'r']),
+          findEx('s', 'sờ', ['nhờ', 'sờ', 'chờ']),
+          pictureEx(SO_NOTEBOOK.emoji, 'sổ', ['sổ', 'rổ', 'số']),
+          listenEx('rá', ['lá', 'rá', 'há']),
+          // Không có dấu ngã cạnh dấu hỏi; "sở", "sờ" là từ nhưng không chỉ tranh
+          toneEx(SO_SCARED.emoji, 'sợ', ['hoi', 'sac', 'nang', 'huyen']),
+          findEx('r', 'rễ', ['rễ', 'chỗ', 'lễ']),
+          listenEx('s', ['ch', 's', 'kh']),
+          // Chim sẻ: loa đọc "sẻ" nên bé không phải tự gọi tên tranh
+          buildEx('🐦', 'sẻ', ['ch', 'nh', 'r', 's'], ['a', 'e', 'ê', 'o'], ['ngang', 'huyen', 'sac', 'hoi']),
+        ],
+      },
+      {
+        number: 22,
+        slug: 'tv1-bai-22',
+        title: 'T t, Tr tr',
+        mark: 'Tt',
+        description: 'Học chữ t, tr, đánh vần tô, tre',
+        teaches: { units: ['t', 'tr'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có âm t hoặc âm tr.',
+            scene(['👦', O_TO_CAR.emoji, SU_TU_LION.emoji], 'Trưa nay, bé ngồi trên ô tô đi xem sư tử.', ['trưa', 'trên', 'tô', 'tử']),
+          ),
+          intro('Chữ t đọc là tờ. Bé bấm vào chữ để nghe.', letter('t')),
+          intro('Chữ tr ghép từ t và r, đọc là trờ. Bé bấm vào chữ để nghe.', letter('tr')),
+          intro(
+            'Bé đánh vần: tờ, ô, tô. Trờ, e, tre.',
+            { kind: 'spell', steps: [...spell('t', 'ô', 'ngang'), ...spell('tr', 'e', 'ngang')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [O_TO_CAR, SU_TU_LION, TRA_TEA, TRE_BAMBOO] }),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Ở nhà trẻ, cô cho bé tô chữ.', highlight: ['trẻ', 'tô'] }),
+        ],
+        exercises: [
+          listenEx('t', ['đ', 't', 'h']),
+          pictureEx(O_TO_CAR.emoji, 'ô tô', ['ca nô', 'đò', 'ô tô']),
+          // Lựa chọn sai có t hoặc r nhưng không có tr, để bé nhìn đủ hai chữ
+          findEx('tr', 'trẻ', ['chẻ', 'tê', 'trẻ', 'rẻ']),
+          // Dấu trừ bé đã gặp ở môn Toán; chỉ "trừ" là từ có nghĩa
+          toneEx('➖', 'trừ', ['sac', 'huyen', 'nang', 'hoi']),
+          // Câu nghe không đặt tr cạnh ch (nhiều vùng đọc giống nhau)
+          listenEx('tr', ['t', 'r', 'th', 'tr']),
+          // Lựa chọn sai không có tr, th vì các chữ này cũng chứa t
+          findEx('t', 'tủ', ['tủ', 'củ', 'đủ']),
+          // Không có "tô" trong lựa chọn vì chén trà trông giống cái tô
+          pictureEx(TRA_TEA.emoji, 'trà', ['tre', 'trà', 'trê']),
+          buildEx(TRE_BAMBOO.emoji, 'tre', ['ch', 'r', 't', 'tr'], ['a', 'e', 'ê', 'ô'], ['ngang', 'huyen', 'sac', 'hoi']),
+        ],
+      },
+      {
+        number: 23,
+        slug: 'tv1-bai-23',
+        title: 'Th th, ia',
+        mark: 'Th',
+        description: 'Học chữ th và ia, đánh vần thỏ, mía',
+        teaches: { units: ['th', 'ia'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có âm th hoặc âm ia.',
+            scene(['👧', THO_RABBIT.emoji, '🥕'], 'Kìa, thỏ con đang chia cà rốt cho các bạn.', ['kìa', 'thỏ', 'chia']),
+          ),
+          intro('Chữ th ghép từ t và h, đọc là thờ. Bé bấm vào chữ để nghe.', letter('th')),
+          intro('Ia gồm chữ i đứng trước, chữ a đứng sau. Bé bấm vào để nghe.', letter('ia')),
+          intro(
+            'Bé đánh vần: thờ, o, tho, hỏi, thỏ. Mờ, ia, mia, sắc, mía. Dấu sắc đặt trên chữ i.',
+            { kind: 'spell', steps: [...spell('th', 'o', 'hoi'), ...spell('m', 'ia', 'sac')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [THO_RABBIT, THIA_SPOON, DIA_DISC] }),
+          intro(
+            'Bé tự đọc câu này, rồi bấm loa để nghe lại.',
+            { kind: 'sentence', text: 'Mẹ cho bé đĩa mía, bé chia cho bà.', highlight: ['đĩa', 'mía', 'chia'] },
+          ),
+        ],
+        exercises: [
+          listenEx('th', ['t', 'th', 'kh', 'tr']),
+          // Lựa chọn sai có i hoặc a nhưng không có ia
+          findEx('ia', 'mía', ['mì', 'má', 'mía']),
+          // Không có dấu sắc ("thó" là tiếng lóng) và dấu ngã
+          toneEx(THO_RABBIT.emoji, 'thỏ', ['nang', 'huyen', 'hoi', 'ngang']),
+          pictureEx(DIA_DISC.emoji, 'đĩa', ['đĩa', 'đá', 'đồ']),
+          listenEx('chia', ['cha', 'chia', 'chi']),
+          findEx('th', 'thợ', ['thợ', 'tờ', 'hồ']),
+          listenEx('kìa', ['kì', 'kia', 'kìa']),
+          // Ghép cả âm mới th và vần mới ia. Hàng âm đầu không có đ để không ghép ra tiếng không hay với vần i
+          buildEx(THIA_SPOON.emoji, 'thìa', ['ch', 't', 'th', 'tr'], ['a', 'i', 'ia', 'ơ'], ['ngang', 'huyen', 'sac', 'nga']),
+        ],
+      },
+      {
+        number: 24,
+        slug: 'tv1-bai-24',
+        title: 'ua, ưa',
+        mark: 'ua',
+        description: 'Học ua, ưa, đánh vần cua, dừa',
+        teaches: { units: ['ua', 'ưa'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có âm ua hoặc âm ưa.',
+            scene(['👧', RUA_TURTLE.emoji, CUA_CRAB.emoji], 'Trưa hè, bé ra biển, thấy rùa và cua bò trên cát.', ['trưa', 'rùa', 'cua']),
+          ),
+          intro('Ua gồm chữ u đứng trước, chữ a đứng sau. Bé bấm vào để nghe.', letter('ua')),
+          intro('Ưa giống ua, chỉ khác ở chữ ư có râu. Bé bấm vào để nghe.', letter('ưa')),
+          intro(
+            'Bé đánh vần: cờ, ua, cua. Dờ, ưa, dưa, huyền, dừa. Dấu huyền đặt trên chữ ư.',
+            { kind: 'spell', steps: [...spell('c', 'ua', 'ngang'), ...spell('d', 'ưa', 'huyen')] },
+          ),
+          intro(
+            'Bé đọc từng từ, rồi bấm vào tranh để nghe lại.',
+            { kind: 'pictures', items: [CUA_CRAB, RUA_TURTLE, DUA_COCONUT, { emoji: '🥛', word: 'sữa' }] },
+          ),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Mẹ đi chợ mua cua, mua dừa.', highlight: ['mua', 'cua', 'dừa'] }),
+        ],
+        exercises: [
+          listenEx('mưa', ['mua', 'ma', 'mưa']),
+          pictureEx(RUA_TURTLE.emoji, 'rùa', ['cua', 'rùa', 'dừa']),
+          // "cửa" và "của" chỉ khác ở chữ ư và u
+          findEx('ưa', 'cửa', ['cửa', 'của', 'cá']),
+          toneEx(DUA_COCONUT.emoji, 'dừa', ['sac', 'huyen', 'hoi', 'nang']),
+          // Có cả c, k và vần đi sau c (ua, ưa, a), vần đi sau k (ia) để bé luyện chính tả c/k
+          buildEx(CUA_CRAB.emoji, 'cua', ['c', 'ch', 'k', 'tr'], ['a', 'ia', 'ua', 'ưa'], ['ngang', 'huyen', 'sac', 'hoi']),
+          listenEx('lửa', ['lúa', 'lửa', 'lá']),
+          findEx('ua', 'múa', ['mũ', 'mía', 'múa']),
+          // Có cả ng, ngh và vần đi sau ng (ua, ưa, a), vần đi sau ngh (ia) để bé luyện chính tả ng/ngh
+          buildEx('🐴', 'ngựa', ['g', 'ng', 'ngh', 'nh'], ['a', 'ia', 'ua', 'ưa'], ['ngang', 'sac', 'hoi', 'nang']),
+        ],
+      },
+      {
+        number: 25,
+        slug: 'tv1-bai-25',
+        title: 'Ôn tập',
+        mark: 'Ôn',
+        description: 'Ôn lại chữ r, s, t, tr, th và ia, ua, ưa',
+        teaches: { units: [], tones: [] },
+        intro: [
+          // Tám mục chia hai thẻ theo thứ tự đã học, như bài 15 và 20
+          intro(
+            'Bé đã học thêm r, s, t, tr, th và ia, ua, ưa. Đây là bốn chữ đầu: r, s, t, tr. Bé bấm để nghe lại.',
+            { kind: 'letter', letters: ['r', 's', 't', 'tr'], say: ['r', 's', 't', 'tr'].map(sayOf).join(', ') },
+          ),
+          intro(
+            'Còn đây là th, ia, ua, ưa. Bé bấm để nghe lại.',
+            { kind: 'letter', letters: ['th', 'ia', 'ua', 'ưa'], say: ['th', 'ia', 'ua', 'ưa'].map(sayOf).join(', ') },
+          ),
+          intro(
+            'Bé nhớ: với ia, ua, ưa, dấu thanh đặt trên chữ đầu, như mía, rùa, sữa.',
+            { kind: 'spell', steps: [toneStep('m', 'ia', 'sac'), toneStep('r', 'ua', 'huyen'), toneStep('s', 'ưa', 'nga')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [O_TO_CAR, THO_RABBIT, CUA_CRAB, DUA_COCONUT] }),
+          intro(
+            'Bé tự đọc câu này, rồi bấm loa để nghe lại.',
+            { kind: 'sentence', text: 'Bố mẹ cho bé đi sở thú. Sở thú có sư tử, có thỏ, có rùa.', highlight: [] },
+          ),
+        ],
+        // Tranh đã có ở bài 21–24 chỉ dùng lại ở dạng câu khác: 🐢 (chọn chữ → dấu thanh), 🦁 (thẻ Từ ngữ → chọn chữ)
+        exercises: [
+          // t, th, tr chỉ khác nhau ở âm đầu
+          listenEx('thả', ['tả', 'thả', 'trả']),
+          pictureEx('🥢', 'đũa', ['đĩa', 'dừa', 'đũa']),
+          findEx('s', 'số', ['số', 'tổ', 'chỗ', 'rổ']),
+          toneEx(RUA_TURTLE.emoji, 'rùa', ['sac', 'nang', 'nga', 'huyen']),
+          findEx('tr', 'trưa', ['thưa', 'tủ', 'trưa']),
+          listenEx('chìa', ['chìa', 'chùa', 'chừa']),
+          pictureEx(SU_TU_LION.emoji, 'sư tử', ['ô tô', 'sư tử', 'thỏ']),
+          // "cửa" và "của" chỉ khác ở vần ưa và ua; c, k để bé luyện chính tả c/k
+          buildEx('🚪', 'cửa', ['c', 'k', 'r', 'th'], ['a', 'ia', 'ua', 'ưa'], ['ngang', 'huyen', 'sac', 'hoi']),
         ],
       },
     ],
