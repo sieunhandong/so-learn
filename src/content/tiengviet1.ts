@@ -178,6 +178,23 @@ const CHO_DOG: PictureWord = { emoji: '🐶', word: 'chó' }
 const KHI_MONKEY: PictureWord = { emoji: '🐒', word: 'khỉ' }
 /** Cuộn chỉ */
 const CHI_THREAD: PictureWord = { emoji: '🧵', word: 'chỉ' }
+/** Mẹ ôm em bé cho bú; tranh 👩 dễ bị gọi là cô hay chị */
+const ME_MOTHER: PictureWord = { emoji: '🤱', word: 'mẹ' }
+/** Mũ lưỡi trai (miền Nam gọi là nón) */
+const MU_CAP: PictureWord = { emoji: '🧢', word: 'mũ' }
+/** Cái nơ cài tóc */
+const NO_BOW: PictureWord = { emoji: '🎀', word: 'nơ' }
+/** Khúc gỗ */
+const GO_WOOD: PictureWord = { emoji: '🪵', word: 'gỗ' }
+const GIO_BASKET: PictureWord = { emoji: '🧺', word: 'giỏ' }
+const GHE_CHAIR: PictureWord = { emoji: '🪑', word: 'ghế' }
+/** Chùm nho */
+const NHO_GRAPES: PictureWord = { emoji: '🍇', word: 'nho' }
+/** Bắp ngô (miền Nam gọi là bắp) */
+const NGO_CORN: PictureWord = { emoji: '🌽', word: 'ngô' }
+const NGU_SLEEP: PictureWord = { emoji: '😴', word: 'ngủ' }
+/** Mặt đang suy nghĩ */
+const NGHI_THINK: PictureWord = { emoji: '🤔', word: 'nghĩ' }
 
 // ---------- Chương trình ----------
 
@@ -651,6 +668,196 @@ export const tiengViet1Chapters: ReadingChapterSeed[] = [
           findEx('k', 'kể', ['chè', 'kể', 'lá', 'hồ']),
           toneEx(CHI_THREAD.emoji, 'chỉ', ['hoi', 'huyen', 'sac', 'nang']),
           buildEx(LA_LEAF.emoji, 'lá', ['ch', 'h', 'kh', 'l'], ['a', 'ê', 'u', 'ư'], ['ngang', 'sac', 'hoi', 'nga']),
+        ],
+      },
+    ],
+  },
+  {
+    number: 4,
+    title: 'Âm và chữ: m, n, g, gi, gh, nh, ng, ngh',
+    lessons: [
+      {
+        number: 16,
+        slug: 'tv1-bai-16',
+        title: 'M m, N n',
+        mark: 'Mn',
+        description: 'Học chữ m, n, đánh vần mũ, nơ',
+        teaches: { units: ['m', 'n'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có âm m hoặc âm n.',
+            scene(['👩', '👧', NO_BOW.emoji], 'Mẹ mua cho Na cái nơ màu đỏ.', ['mẹ', 'mua', 'na', 'nơ', 'màu']),
+          ),
+          intro('Chữ m đọc là mờ. Bé bấm vào chữ để nghe.', letter('m')),
+          intro('Chữ n đọc là nờ. Chữ m có ba chân, chữ n chỉ có hai chân. Bé bấm vào chữ để nghe.', letter('n')),
+          intro(
+            'Bé đánh vần: mờ, u, mu, ngã, mũ. Nờ, ơ, nơ.',
+            { kind: 'spell', steps: [...spell('m', 'u', 'nga'), ...spell('n', 'ơ', 'ngang')] },
+          ),
+          intro(
+            'Bé đọc từng từ, rồi bấm vào tranh để nghe lại.',
+            { kind: 'pictures', items: [ME_MOTHER, MU_CAP, NO_BOW, { emoji: '🚤', word: 'ca nô' }] },
+          ),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Bố mẹ cho Na đi ca nô.', highlight: ['mẹ', 'na', 'nô'] }),
+        ],
+        exercises: [
+          listenEx('m', ['n', 'm', 'h']),
+          findEx('m', 'mì', ['na', 'lê', 'mì']),
+          pictureEx(NO_BOW.emoji, 'nơ', ['nơ', 'mơ', 'nở']),
+          listenEx('nở', ['mở', 'lở', 'nở']),
+          // Không đặt dấu hỏi cạnh dấu ngã: "mủ" và "mũ" đều là từ, dễ lẫn khi nghe
+          toneEx(MU_CAP.emoji, 'mũ', ['nga', 'huyen', 'sac', 'nang']),
+          findEx('n', 'no', ['lo', 'no', 'mỏ']),
+          buildEx(ME_MOTHER.emoji, 'mẹ', ['b', 'l', 'm', 'n'], ['a', 'e', 'ê', 'o'], ['ngang', 'huyen', 'sac', 'nang']),
+        ],
+      },
+      {
+        number: 17,
+        slug: 'tv1-bai-17',
+        title: 'G g, Gi gi',
+        mark: 'Gg',
+        description: 'Học chữ g, gi, đánh vần gà, giỏ',
+        teaches: { units: ['g', 'gi'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có âm g hoặc âm gi.',
+            scene(['👵', GIO_BASKET.emoji, GA_CHICKEN.emoji], 'Gió thổi nhè nhẹ, bà xách giỏ thóc ra cho gà ăn.', ['gió', 'giỏ', 'gà']),
+          ),
+          intro('Chữ g đọc là gờ. Bé bấm vào chữ để nghe.', letter('g')),
+          intro('Chữ gi ghép từ g và i, đọc là di. Bé bấm vào chữ để nghe.', letter('gi')),
+          intro(
+            'Bé đánh vần: gờ, a, ga, huyền, gà. Di, o, gio, hỏi, giỏ.',
+            { kind: 'spell', steps: [...spell('g', 'a', 'huyen'), ...spell('gi', 'o', 'hoi')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [GA_CHICKEN, GIO_BASKET, GO_WOOD] }),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Gà mổ cỏ. Bé giữ giỏ cho bà.', highlight: ['gà', 'giữ', 'giỏ'] }),
+        ],
+        exercises: [
+          listenEx('g', ['h', 'gi', 'k', 'g']),
+          pictureEx(GO_WOOD.emoji, 'gỗ', ['gò', 'gỗ', 'giỏ']),
+          findEx('gi', 'gió', ['gà', 'hồ', 'gió']),
+          listenEx('gi', ['gi', 'd', 'g']),
+          // Không đặt dấu ngã cạnh dấu hỏi: "gã" và "gả" đều là từ, dễ lẫn khi nghe
+          toneEx(GA_CHICKEN.emoji, 'gà', ['sac', 'huyen', 'ngang', 'hoi']),
+          findEx('g', 'gõ', ['gõ', 'chó', 'lọ', 'đỗ']),
+          listenEx('giờ', ['gờ', 'gì', 'giờ']),
+          // Hàng vần chỉ có vần đi sau g (chưa học gh), để không ghép ra "ge", "gê"
+          buildEx(GIO_BASKET.emoji, 'giỏ', ['c', 'g', 'gi', 'l'], ['a', 'o', 'ô', 'u'], ['ngang', 'huyen', 'sac', 'hoi']),
+        ],
+      },
+      {
+        number: 18,
+        slug: 'tv1-bai-18',
+        title: 'Gh gh, Nh nh',
+        mark: 'Gh',
+        description: 'Học chữ gh, nh, đánh vần ghế, nhà',
+        teaches: { units: ['gh', 'nh'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có chữ gh hoặc chữ nh.',
+            scene(['👧', NHA_HOUSE.emoji, NHO_GRAPES.emoji], 'Bé ghé nhà bà, bà mời bé ăn nho.', ['ghé', 'nhà', 'nho']),
+          ),
+          intro('Chữ gh ghép từ g và h, đọc là gờ kép. Chữ gh chỉ đứng trước i, e, ê. Bé bấm vào chữ để nghe.', letter('gh')),
+          intro('Chữ nh ghép từ n và h, đọc là nhờ. Bé bấm vào chữ để nghe.', letter('nh')),
+          intro(
+            'Bé đánh vần: gờ kép, ê, ghê, sắc, ghế. Nhờ, a, nha, huyền, nhà.',
+            { kind: 'spell', steps: [...spell('gh', 'ê', 'sac'), ...spell('nh', 'a', 'huyen')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [GHE_CHAIR, NHA_HOUSE, NHO_GRAPES] }),
+          intro(
+            'Bé tự đọc câu này, rồi bấm loa để nghe lại.',
+            { kind: 'sentence', text: 'Nhà bà có ghế gỗ, có giỏ nho.', highlight: ['nhà', 'ghế', 'nho'] },
+          ),
+        ],
+        exercises: [
+          listenEx('nh', ['ch', 'n', 'nh', 'kh']),
+          findEx('gh', 'ghé', ['gà', 'ghé', 'giỏ']),
+          pictureEx(NHA_HOUSE.emoji, 'nhà', ['nhè', 'nhớ', 'nhà']),
+          listenEx('gh', ['gh', 'g', 'h']),
+          findEx('nh', 'nhỏ', ['nơ', 'chó', 'hổ', 'nhỏ']),
+          toneEx(NHO_GRAPES.emoji, 'nho', ['ngang', 'huyen', 'sac', 'nang']),
+          listenEx('ghi', ['khi', 'ghi', 'gì']),
+          // Có cả g, gh và vần đi sau g (a, o), vần đi sau gh (ê, i) để bé luyện chính tả g/gh
+          buildEx(GHE_CHAIR.emoji, 'ghế', ['g', 'gh', 'gi', 'nh'], ['a', 'ê', 'i', 'o'], ['ngang', 'huyen', 'sac', 'hoi']),
+        ],
+      },
+      {
+        number: 19,
+        slug: 'tv1-bai-19',
+        title: 'Ng ng, Ngh ngh',
+        mark: 'Ng',
+        description: 'Học chữ ng, ngh, đánh vần ngô, nghé',
+        teaches: { units: ['ng', 'ngh'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có chữ ng hoặc chữ ngh.',
+            scene(['👵', '👧', '📖'], 'Bé ngồi nghỉ ở đầu ngõ, nghe bà kể chuyện.', ['ngồi', 'nghỉ', 'ngõ', 'nghe']),
+          ),
+          intro('Chữ ng ghép từ n và g, đọc là ngờ. Bé bấm vào chữ để nghe.', letter('ng')),
+          intro('Chữ ngh ghép từ n, g và h, đọc là ngờ kép. Chữ ngh chỉ đứng trước i, e, ê. Bé bấm vào chữ để nghe.', letter('ngh')),
+          intro(
+            'Bé đánh vần: ngờ, ô, ngô. Ngờ kép, e, nghe, sắc, nghé.',
+            { kind: 'spell', steps: [...spell('ng', 'ô', 'ngang'), ...spell('ngh', 'e', 'sac')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [NGO_CORN, NGU_SLEEP, NGHI_THINK] }),
+          intro(
+            'Bé tự đọc câu này, rồi bấm loa để nghe lại.',
+            { kind: 'sentence', text: 'Bà ngủ, bé đi nhè nhẹ cho bà nghỉ.', highlight: ['ngủ', 'nghỉ'] },
+          ),
+        ],
+        exercises: [
+          listenEx('ng', ['n', 'ng', 'nh', 'ngh']),
+          pictureEx(NGU_SLEEP.emoji, 'ngủ', ['nghé', 'ngã', 'ngủ']),
+          findEx('ngh', 'nghe', ['nghe', 'ngô', 'ghế']),
+          // Không đặt dấu hỏi cạnh dấu ngã: "nghỉ" và "nghĩ" đều là từ, dễ lẫn khi nghe
+          toneEx(NGHI_THINK.emoji, 'nghĩ', ['sac', 'nang', 'nga', 'huyen']),
+          findEx('ng', 'ngõ', ['nhà', 'ngõ', 'nơ']),
+          listenEx('nghỉ', ['khỉ', 'chỉ', 'nhì', 'nghỉ']),
+          // Có cả ng, ngh và vần đi sau ng (a, ô), vần đi sau ngh (e, i) để bé luyện chính tả ng/ngh.
+          // Hàng vần không có u để bé không ghép ra tiếng không hay
+          buildEx(NGO_CORN.emoji, 'ngô', ['g', 'ng', 'ngh', 'nh'], ['a', 'e', 'i', 'ô'], ['ngang', 'huyen', 'sac', 'nga']),
+        ],
+      },
+      {
+        number: 20,
+        slug: 'tv1-bai-20',
+        title: 'Ôn tập',
+        mark: 'Ôn',
+        description: 'Ôn lại chữ m, n, g, gi, gh, nh, ng, ngh',
+        teaches: { units: [], tones: [] },
+        intro: [
+          // Tám chữ chia hai thẻ theo thứ tự đã học, như bài 15
+          intro(
+            'Bé đã học thêm tám chữ. Đây là bốn chữ đầu: m, n, g, gi. Bé bấm để nghe lại.',
+            { kind: 'letter', letters: ['m', 'n', 'g', 'gi'], say: ['m', 'n', 'g', 'gi'].map(sayOf).join(', ') },
+          ),
+          intro(
+            'Còn đây là bốn chữ sau: gh, nh, ng, ngh. Bé bấm để nghe lại.',
+            { kind: 'letter', letters: ['gh', 'nh', 'ng', 'ngh'], say: ['gh', 'nh', 'ng', 'ngh'].map(sayOf).join(', ') },
+          ),
+          intro(
+            'Bé nhớ: gh chỉ đứng trước i, e, ê, như ghi. Còn g đứng trước a, o, ô, ơ, u, ư, như gõ.',
+            { kind: 'spell', steps: [...spell('gh', 'i', 'ngang'), ...spell('g', 'o', 'nga')] },
+          ),
+          intro(
+            'Ngh cũng chỉ đứng trước i, e, ê, như nghỉ. Còn ng đứng trước a, o, ô, ơ, u, ư, như ngõ.',
+            { kind: 'spell', steps: [...spell('ngh', 'i', 'hoi'), ...spell('ng', 'o', 'nga')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [MU_CAP, GIO_BASKET, NHO_GRAPES, NGO_CORN] }),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Bé nghỉ hè ở nhà bà. Nhà bà có gà, có ngô.', highlight: [] }),
+        ],
+        // Tranh đã có ở bài 16–19 chỉ dùng lại ở dạng câu khác: 🪑 (ghép → chọn chữ), 🌽 (ghép → dấu thanh),
+        // 🧢 (dấu thanh → chọn chữ), 🐔 (dấu thanh → ghép)
+        exercises: [
+          listenEx('nhớ', ['nhờ', 'chớ', 'nhớ', 'nở']),
+          findEx('n', 'nụ', ['nụ', 'mè', 'lá']),
+          pictureEx(GHE_CHAIR.emoji, 'ghế', ['khế', 'ghế', 'ghé']),
+          findEx('gi', 'giữ', ['gỗ', 'chữ', 'hồ', 'giữ']),
+          toneEx(NGO_CORN.emoji, 'ngô', ['ngang', 'nang', 'huyen', 'hoi']),
+          pictureEx(MU_CAP.emoji, 'mũ', ['nơ', 'mẹ', 'mũ']),
+          listenEx('nghe', ['nghe', 'ghe', 'khe']),
+          // Có cả g, gh, ng, ngh với vần trước và sau (a, o / e, i) để luyện chính tả g/gh, ng/ngh
+          buildEx(GA_CHICKEN.emoji, 'gà', ['g', 'gh', 'ng', 'ngh'], ['a', 'e', 'i', 'o'], ['ngang', 'huyen', 'sac', 'hoi']),
         ],
       },
     ],
