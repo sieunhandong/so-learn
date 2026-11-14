@@ -86,6 +86,32 @@ test('câu nghe chọn chữ (listen) có 3–4 lựa chọn (spec mục 5)', ()
   }
 })
 
+test('lời giải câu listen: "Đó là chữ X." khi X là âm/chữ trong UNIT_SAY, còn lại "Đó là tiếng X."', () => {
+  let count = 0
+  for (const lesson of lessons) {
+    lesson.exercises.forEach((ex, i) => {
+      if (ex.visual.kind !== 'listen') return
+      count += 1
+      const expected = Object.hasOwn(UNIT_SAY, ex.answer) ? `Đó là chữ ${ex.answer}.` : `Đó là tiếng ${ex.answer}.`
+      assert.equal(ex.explain, expected, `${where(lesson)}, câu ${i + 1}`)
+    })
+  }
+  assert.ok(count > 0, 'chưa có câu listen nào')
+})
+
+test('thẻ Cùng học dạng pictures (Từ ngữ) có 2–4 tranh (spec mục Từ ngữ)', () => {
+  let count = 0
+  for (const lesson of lessons) {
+    lesson.intro.forEach((card, i) => {
+      if (card.visual.kind !== 'pictures') return
+      count += 1
+      const n = card.visual.items.length
+      assert.ok(n >= 2 && n <= 4, `${where(lesson)}, thẻ ${i + 1}: ${n} tranh, cần 2–4`)
+    })
+  }
+  assert.ok(count > 0, 'chưa có thẻ pictures nào')
+})
+
 test('từ bài 2, bài âm có cả dạng nghe và ghép tiếng, ít nhất 3 dạng; bài ôn tập ít nhất 3 dạng', () => {
   for (const lesson of lessons) {
     const kinds = new Set(lesson.exercises.map((ex) => ex.visual.kind))
