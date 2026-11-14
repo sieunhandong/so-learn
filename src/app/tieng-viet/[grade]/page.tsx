@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import AccountNav from '@/components/layout/AccountNav'
@@ -14,6 +15,12 @@ import { isSupabaseConfigured } from '@/lib/supabase'
 
 interface GradePageProps {
   params: Promise<{ grade: string }>
+}
+
+// Không có thì trang thừa hưởng tiêu đề "Học toán" của layout gốc
+export const metadata: Metadata = {
+  title: 'Vở Tiếng Việt lớp 1 – SoLearn',
+  description: 'Vở Tiếng Việt lớp 1 trên SoLearn: học âm, chữ và dấu thanh, có giọng đọc hướng dẫn cho bé.',
 }
 
 /** Mục lục Tiếng Việt lớp 1: có tiến độ và khóa bài khi có bé đang học, như vở toán */
