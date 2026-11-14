@@ -9,13 +9,14 @@ interface ReadingVisualViewProps {
   visual: ReadingVisual
 }
 
-// Thẻ bấm được: viền, bóng đặc, lún xuống khi bấm (giống ô đáp án bên toán). Padding để từng chỗ dùng tự thêm
+// Thẻ bấm được: viền, bóng đặc, lún xuống khi bấm (giống ô đáp án bên toán). Padding để từng chỗ dùng tự thêm.
+// Khi khóa (trình duyệt không đọc được) vẫn giữ nguyên độ đậm để bé còn đọc chữ; chỉ bỏ hiệu ứng bấm và đổi con trỏ
 const tapCard =
-  'rounded-2xl border-2 border-ink/30 bg-white shadow-[0_5px_0_0_var(--color-grid)] transition-[transform,box-shadow] duration-100 hover:border-ink active:translate-y-1 active:shadow-none disabled:cursor-not-allowed disabled:opacity-50'
+  'rounded-2xl border-2 border-ink/30 bg-white shadow-[0_5px_0_0_var(--color-grid)] transition-[transform,box-shadow] duration-100 enabled:hover:border-ink enabled:active:translate-y-1 enabled:active:shadow-none disabled:cursor-not-allowed'
 
 // Nút loa tròn vàng, cùng kiểu với SpeakButton của môn Toán. Kích thước để từng chỗ dùng tự thêm
 const speakRound =
-  'grid shrink-0 place-items-center rounded-full bg-sun text-ink-deep shadow-[0_4px_0_0_#D9A21F] transition-transform active:translate-y-1 active:shadow-none disabled:cursor-not-allowed disabled:opacity-50'
+  'grid shrink-0 place-items-center rounded-full bg-sun text-ink-deep shadow-[0_4px_0_0_#D9A21F] transition-transform enabled:active:translate-y-1 enabled:active:shadow-none disabled:cursor-not-allowed'
 
 // Tách câu bằng split: nhờ cặp ngoặc tròn, các chữ nằm ở vị trí lẻ, xen giữa là khoảng trắng và dấu câu
 const WORD_PATTERN = /(\p{L}[\p{L}\p{M}]*)/u
@@ -212,9 +213,9 @@ export default function ReadingVisualView({ visual }: ReadingVisualViewProps) {
           speech={speech}
           label="Nghe đọc để chọn đáp án"
           text={visual.say}
-          className="group flex flex-col items-center gap-3 rounded-2xl px-6 py-3 disabled:cursor-not-allowed disabled:opacity-50"
+          className="group flex flex-col items-center gap-3 rounded-2xl px-6 py-3 disabled:cursor-not-allowed"
         >
-          <span className="grid size-28 place-items-center rounded-full bg-sun text-ink-deep shadow-[0_6px_0_0_#D9A21F] transition-transform group-active:translate-y-1.5 group-active:shadow-none">
+          <span className="grid size-28 place-items-center rounded-full bg-sun text-ink-deep shadow-[0_6px_0_0_#D9A21F] transition-transform group-enabled:group-active:translate-y-1.5 group-enabled:group-active:shadow-none">
             <SpeakerIcon className="size-14" />
           </span>
           <span className="text-lg font-semibold text-pencil">Bấm để nghe</span>

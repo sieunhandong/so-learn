@@ -1,7 +1,10 @@
 'use client'
 
-import { useSyncExternalStore } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import type { VoiceStatus } from '@/types/tiengviet'
+
+/** Chờ danh sách giọng tối đa ngần này mili giây; quá hạn mà vẫn rỗng thì coi như máy thiếu giọng */
+const VOICE_WAIT_MS = 3000
 
 /** Trình duyệt nạp danh sách giọng chậm nên báo lại qua sự kiện voiceschanged */
 function subscribe(onChange: () => void): () => void {
@@ -22,7 +25,21 @@ function getSnapshot(): VoiceStatus {
 // Trên server chưa biết trình duyệt có giọng nào, nên coi như đang kiểm tra
 const getServerSnapshot = (): VoiceStatus => 'checking'
 
-/** Kiểm tra trình duyệt có giọng đọc tiếng Việt (lang bắt đầu bằng "vi") hay không */
+/**
+ * Kiểm tra trình duyệt có giọng đọc tiếng Việt (lang bắt đầu bằng "vi") hay không.
+ * Một số trình duyệt không bao giờ báo voiceschanged và getVoices() rỗng mãi, nên sau VOICE_WAIT_MS vẫn đang
+ * kiểm tra thì báo 'missing'. Nếu giọng về muộn hơn thì trạng thái vẫn đổi sang 'ready' như bình thường.
+ */
 export function useVietnameseVoice(): VoiceStatus {
-  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  const status = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  const [waitedOut, setWaitedOut] = useState(false)
+
+  useEffect(() => {
+    // Chỉ hẹn giờ khi còn đang kiểm tra; đổi trạng thái hoặc gỡ component thì hủy hẹn giờ
+    if (status !== 'checking') return
+    const timer = setTimeout(() => setWaitedOut(true), VOICE_WAIT_MS)
+    return () => clearTimeout(timer)
+  }, [status])
+
+  return status === 'checking' && waitedOut ? 'missing' : status
 }

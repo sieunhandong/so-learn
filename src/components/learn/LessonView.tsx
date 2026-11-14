@@ -14,6 +14,7 @@ import QuizRunner from './QuizRunner'
 import SpeakButton from './SpeakButton'
 import TopicMark from './TopicMark'
 import type { LessonIntroItem, LessonQuestion, Subject } from '@/types/lesson'
+import type { VoiceStatus } from '@/types/tiengviet'
 
 export interface LessonInfo {
   title: string
@@ -35,6 +36,12 @@ interface LessonViewProps {
 }
 
 type Stage = 'learn' | 'practice'
+
+/** Lời báo bố mẹ khi bé không nghe được bài; trạng thái không có trong bảng (đang kiểm tra, sẵn sàng) thì không báo */
+const VOICE_NOTES: Partial<Record<VoiceStatus, string>> = {
+  missing: 'Máy này có thể chưa có giọng đọc tiếng Việt. Bố mẹ cài thêm giọng tiếng Việt trong phần cài đặt của máy để bé nghe được bài.',
+  unsupported: 'Trình duyệt này chưa đọc được thành tiếng nên bé chưa nghe được bài. Bố mẹ mở trang này bằng Chrome hoặc Safari giúp bé.',
+}
 
 /** Hai bước của một bài: 1. Cùng học, 2. Luyện tập */
 function Steps({ stage, onChange }: { stage: Stage; onChange: (s: Stage) => void }) {
@@ -70,6 +77,7 @@ function Steps({ stage, onChange }: { stage: Stage; onChange: (s: Stage) => void
 export default function LessonView({ subject, lesson, questions, backHref, studentName }: LessonViewProps) {
   const info = SUBJECTS[subject]
   const voice = useVietnameseVoice()
+  const voiceNote = VOICE_NOTES[voice]
   const [stage, setStage] = useState<Stage>('learn')
   const [newBadges, setNewBadges] = useState<string[]>([])
   const [saveFailed, setSaveFailed] = useState(false)
@@ -113,11 +121,9 @@ export default function LessonView({ subject, lesson, questions, backHref, stude
         <div className="mt-5">
           <Steps stage={stage} onChange={setStage} />
         </div>
-        {/* Chỉ báo khi chắc chắn thiếu giọng tiếng Việt, không báo lúc còn đang kiểm tra */}
-        {subject === 'tieng-viet' && voice === 'missing' && (
-          <p className="mt-4 rounded-2xl border-2 border-dashed border-pen/40 bg-white/70 px-4 py-3 text-lg text-pencil">
-            Máy này có thể chưa có giọng đọc tiếng Việt. Bố mẹ cài thêm giọng tiếng Việt trong phần cài đặt của máy để bé nghe được bài.
-          </p>
+        {/* Báo khi chắc chắn không nghe được (thiếu giọng hoặc trình duyệt không đọc được), không báo lúc còn đang kiểm tra */}
+        {subject === 'tieng-viet' && voiceNote && (
+          <p className="mt-4 rounded-2xl border-2 border-dashed border-pen/40 bg-white/70 px-4 py-3 text-lg text-pencil">{voiceNote}</p>
         )}
       </div>
 
