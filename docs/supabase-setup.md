@@ -88,11 +88,11 @@ select conname from pg_constraint where conrelid = 'public.topics'::regclass;
 - Truy vấn 1: chỉ có một dòng `math` (20 bài); chưa có `tieng-viet`.
 - Truy vấn 2: có `topics_subject_grade_position_key`, không còn `topics_grade_position_key`.
 
-**Bước 2. Deploy code mới, chưa đặt `TIENG_VIET_ENABLED`.** Trang chủ, dashboard và footer chưa hiện lối vào Tiếng Việt. Toán chạy như cũ.
+**Bước 2. Deploy code mới, chưa đặt `TIENG_VIET_ENABLED`.** Gộp nhánh vào `main` là deploy (Vercel tự build từ `main`); chạy migration ở Bước 1 TRƯỚC khi gộp. Trang chủ, dashboard và footer chưa hiện lối vào Tiếng Việt. Toán chạy như cũ.
 
 **Bước 3. Nạp seed.** Dán toàn bộ `supabase/seed.sql` mới vào SQL Editor, bấm **Run**. Kiểm tra: `topics` có 50 dòng, `exercises` có 355 dòng; truy vấn 1 ở trên giờ trả về `math` = 20 và `tieng-viet` = 30.
 
-**Bước 4. Duyệt nội dung.** Mở trực tiếp `https://<tên-miền>/tieng-viet/1` (URL này luôn mở được dù chưa bật biến), đọc hết 30 bài và nghe thử giọng đọc. Cần sửa thì sửa `src/content/tiengviet1.ts` hoặc `src/content/tiengviet-sounds.ts`, chạy `npm run seed:build`, deploy, rồi chạy lại `seed.sql` (xem mục "Sửa hoặc thêm bài học").
+**Bước 4. Duyệt nội dung.** Mở trực tiếp `https://<tên-miền>/tieng-viet/1` (URL này luôn mở được dù chưa bật biến), đọc hết 30 bài và nghe thử giọng đọc. Nghe thử ở `https://<tên-miền>/thu-giong-doc` trên các thiết bị bé sẽ dùng, gồm cả khi bấm vào một đường link nhận qua Zalo hoặc Facebook trên Android (trình duyệt trong ứng dụng có thể khác Chrome nên cần thử riêng). Nghe xong thì xóa thư mục `src/app/thu-giong-doc/` (trang tạm này không được để lại trên bản chính thức), commit rồi gộp vào `main` để deploy lại. Cần sửa thì sửa `src/content/tiengviet1.ts` hoặc `src/content/tiengviet-sounds.ts`, chạy `npm run seed:build`, deploy, rồi chạy lại `seed.sql` (xem mục "Sửa hoặc thêm bài học").
 
 **Bước 5. Bật Tiếng Việt.** Trên Vercel, vào **Project → Settings → Environment Variables**, thêm `TIENG_VIET_ENABLED` = `true`, rồi **deploy lại**. Biến chỉ có hiệu lực ở bản deploy mới; đổi biến xong mà không deploy lại thì site vẫn như cũ. Muốn tắt, đổi giá trị khác `true` (hoặc xóa biến) rồi deploy lại.
 

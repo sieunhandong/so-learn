@@ -1,4 +1,4 @@
-// Trang tạm để nghe thử giọng đọc tiếng Việt của trình duyệt. Không gắn link từ trang nào, xóa ở Task 17.
+// Trang tạm để nghe thử giọng đọc tiếng Việt của trình duyệt. Không gắn link từ trang nào, xóa sau khi chủ dự án nghe thử xong (xem docs/supabase-setup.md).
 import SpeakButton from '@/components/learn/SpeakButton'
 import BuildSyllable from '@/components/tieng-viet/BuildSyllable'
 import ReadingVisualView from '@/components/tieng-viet/ReadingVisualView'

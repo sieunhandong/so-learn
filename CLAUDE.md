@@ -139,9 +139,9 @@ badges: id, student_id, badge_type, earned_at
 ### Thứ tự phát hành môn Tiếng Việt (chi tiết: `docs/supabase-setup.md`)
 
 1. Chạy migration `supabase/migrations/20261026000000_subject.sql` trên Supabase. **Phải làm trước khi deploy code mới**, nếu không trang Toán bị lỗi (`column topics.subject does not exist`).
-2. Deploy code mới, chưa đặt `TIENG_VIET_ENABLED`.
+2. Deploy code mới, chưa đặt `TIENG_VIET_ENABLED`. **Gộp nhánh vào `main` là deploy (Vercel tự build); chạy migration ở mục 1 TRƯỚC khi gộp.**
 3. Chạy `supabase/seed.sql` mới.
-4. Duyệt nội dung ở `/tieng-viet/1`, nghe thử giọng đọc.
+4. Duyệt nội dung ở `/tieng-viet/1`, nghe thử giọng đọc ở `/thu-giong-doc` (cả khi mở link từ Zalo/Facebook trên Android); nghe xong xóa `src/app/thu-giong-doc/` rồi deploy lại.
 5. Đặt `TIENG_VIET_ENABLED=true` trên Vercel rồi deploy lại.
 
 ---
