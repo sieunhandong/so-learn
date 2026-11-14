@@ -5,7 +5,9 @@
 import type {
   PictureWord, ReadingChapterSeed, ReadingExerciseSeed, ReadingIntro, ReadingVisual, SpellStep, Tone,
 } from '../types/tiengviet'
-import { composeSyllable, splitSyllable, stripTone, syllablesOf, toneLabel, toneOf, TONE_NAMES } from '../lib/tiengviet.ts'
+import {
+  composeSyllable, spellingError, splitSyllable, stripTone, syllablesOf, toneLabel, toneOf, TONE_NAMES,
+} from '../lib/tiengviet.ts'
 import { UNIT_SAY } from './tiengviet-sounds.ts'
 
 // ---------- Hàm tạo thẻ và câu hỏi ----------
@@ -139,6 +141,32 @@ function buildEx(emoji: string, word: string, onsets: string[], rimes: string[],
   }
 }
 
+/** Cặp chữ cùng cách đọc theo quy tắc chính tả: c/k, g/gh, ng/ngh */
+const SPELLING_PAIR: Record<string, string> = { c: 'k', k: 'c', g: 'gh', gh: 'g', ng: 'ngh', ngh: 'ng' }
+
+/**
+ * Bài 29: chọn cách viết đúng cho tranh. Lựa chọn sai đổi âm đầu của tiếng đầu sang chữ cùng cách đọc
+ * nhưng sai quy tắc (kẻ → cẻ, gà → ghà). `at` là vị trí của cách viết đúng, để đáp án không luôn đứng đầu
+ */
+function spellingEx(picture: PictureWord, at: 0 | 1): ReadingExerciseSeed {
+  const [first, ...rest] = picture.word.split(' ')
+  const { onset, rime, tone } = splitSyllable(first)
+  const swapped: string | undefined = SPELLING_PAIR[onset]
+  if (swapped === undefined || spellingError(first) !== null) {
+    throw new Error(`"${picture.word}" phải mở đầu bằng c, k, g, gh, ng hoặc ngh viết đúng quy tắc`)
+  }
+  const wrong = [composeSyllable(swapped, rime, tone), ...rest].join(' ')
+  const options = at === 0 ? [picture.word, wrong] : [wrong, picture.word]
+  const vowel = Array.from(rime)[0]
+  return {
+    ...choice(
+      'Bé chọn cách viết đúng cho tranh.', { kind: 'picture', emoji: picture.emoji }, picture.word, options,
+      `Trước ${vowel} viết ${onset}, nên viết ${picture.word}.`,
+    ),
+    allowMisspelled: true,
+  }
+}
+
 // ---------- Tranh dùng nhiều lần ----------
 
 const BA_GRANDMA: PictureWord = { emoji: '👵', word: 'bà' }
@@ -213,6 +241,19 @@ const DIA_DISC: PictureWord = { emoji: '💿', word: 'đĩa' }
 const CUA_CRAB: PictureWord = { emoji: '🦀', word: 'cua' }
 const RUA_TURTLE: PictureWord = { emoji: '🐢', word: 'rùa' }
 const DUA_COCONUT: PictureWord = { emoji: '🥥', word: 'dừa' }
+/** Bát phở; trẻ có thể gọi là mì, nên không dùng làm đáp án câu "Tranh vẽ gì?" */
+const PHO_NOODLE: PictureWord = { emoji: '🍜', word: 'phở' }
+/** Hộp quà */
+const QUA_GIFT: PictureWord = { emoji: '🎁', word: 'quà' }
+/** Cái ví; trẻ có thể gọi là túi */
+const VI_WALLET: PictureWord = { emoji: '👛', word: 'ví' }
+const VA_LI_SUITCASE: PictureWord = { emoji: '🧳', word: 'va li' }
+/** Xe đạp; trẻ gọi chung là xe */
+const XE_BIKE: PictureWord = { emoji: '🚲', word: 'xe' }
+/** Viên đá quý; trẻ có thể gọi là kim cương */
+const DA_QUY_GEM: PictureWord = { emoji: '💎', word: 'đá quý' }
+/** Người quỳ gối */
+const QUY_KNEEL: PictureWord = { emoji: '🧎', word: 'quỳ' }
 
 // ---------- Chương trình ----------
 
@@ -1077,6 +1118,193 @@ export const tiengViet1Chapters: ReadingChapterSeed[] = [
           pictureEx(SU_TU_LION.emoji, 'sư tử', ['ô tô', 'sư tử', 'thỏ']),
           // "cửa" và "của" chỉ khác ở vần ưa và ua; c, k để bé luyện chính tả c/k
           buildEx('🚪', 'cửa', ['c', 'k', 'r', 'th'], ['a', 'ia', 'ua', 'ưa'], ['ngang', 'huyen', 'sac', 'hoi']),
+        ],
+      },
+    ],
+  },
+  {
+    number: 6,
+    title: 'Âm và chữ: ph, qu, v, x, y',
+    lessons: [
+      {
+        number: 26,
+        slug: 'tv1-bai-26',
+        title: 'Ph ph, Qu qu',
+        mark: 'Ph',
+        description: 'Học chữ ph, qu, đánh vần phở, quà',
+        teaches: { units: ['ph', 'qu'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có âm ph hoặc âm qu.',
+            scene(['👧', QUA_GIFT.emoji, PHO_NOODLE.emoji], 'Bé về quê, mang quà cho bà, rồi cả nhà đi ăn phở.', ['quê', 'quà', 'phở']),
+          ),
+          intro('Chữ ph ghép từ p và h, đọc là phờ. Bé bấm vào chữ để nghe.', letter('ph')),
+          intro('Chữ qu ghép từ q và u, đọc là quờ. Bé bấm vào chữ để nghe.', letter('qu')),
+          intro(
+            'Bé đánh vần: phờ, ơ, phơ, hỏi, phở. Quờ, a, qua, huyền, quà.',
+            { kind: 'spell', steps: [...spell('ph', 'ơ', 'hoi'), ...spell('qu', 'a', 'huyen')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [PHO_NOODLE, QUA_GIFT] }),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Bố đưa bé ra phố, mua quà cho bà.', highlight: ['phố', 'quà'] }),
+        ],
+        exercises: [
+          listenEx('ph', ['th', 'ph', 'kh']),
+          // Không có "trà" trong lựa chọn vì cốc ☕ cũng có thể là trà
+          pictureEx('☕', 'cà phê', ['cà phê', 'ca nô', 'cá rô']),
+          // Lựa chọn sai mở đầu bằng k, c: cùng đọc gần giống qu, bé phải nhìn đủ hai chữ q, u
+          findEx('qu', 'quả', ['kể', 'cổ', 'quả']),
+          // Không có dấu ngã cạnh dấu hỏi; "phố", "phờ" là từ nhưng không chỉ tranh
+          toneEx(PHO_NOODLE.emoji, 'phở', ['hoi', 'sac', 'nang', 'huyen']),
+          listenEx('quê', ['kê', 'quê', 'phê']),
+          findEx('ph', 'phố', ['bố', 'hồ', 'phố']),
+          // Có cả c, k, qu và vần đi sau c (a, ơ), vần đi sau k (e, ê) để bé phân biệt ba cách viết.
+          // Hàng vần không có o để không ghép ra tiếng không hay với ph
+          buildEx(QUA_GIFT.emoji, 'quà', ['c', 'k', 'ph', 'qu'], ['a', 'e', 'ê', 'ơ'], ['ngang', 'huyen', 'sac', 'nang']),
+        ],
+      },
+      {
+        number: 27,
+        slug: 'tv1-bai-27',
+        title: 'V v, X x',
+        mark: 'Vx',
+        description: 'Học chữ v, x, đánh vần vẽ, xe',
+        teaches: { units: ['v', 'x'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có âm v hoặc âm x.',
+            scene(['👦', '🎨', '🐘'], 'Bé vẽ voi, vẽ xe, vẽ cả vườn hoa xinh xinh.', ['vẽ', 'voi', 'xe', 'vườn', 'xinh']),
+          ),
+          intro('Chữ v đọc là vờ. Bé bấm vào chữ để nghe.', letter('v')),
+          intro('Chữ x đọc là xờ. Bé bấm vào chữ để nghe.', letter('x')),
+          intro(
+            'Bé đánh vần: vờ, e, ve, ngã, vẽ. Xờ, e, xe.',
+            { kind: 'spell', steps: [...spell('v', 'e', 'nga'), ...spell('x', 'e', 'ngang')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [VI_WALLET, VA_LI_SUITCASE, XE_BIKE] }),
+          intro('Bé tự đọc câu này, rồi bấm loa để nghe lại.', { kind: 'sentence', text: 'Nghỉ hè, cả nhà đi xe về quê.', highlight: ['xe', 'về'] }),
+        ],
+        exercises: [
+          // Câu nghe không đặt v cạnh d, gi và x cạnh s (nhiều vùng đọc giống nhau)
+          listenEx('v', ['b', 'v', 'x']),
+          pictureEx(VI_WALLET.emoji, 'ví', ['ví', 'vé', 'vì']),
+          // Câu tìm có chữ để nhìn, nên được đặt s cạnh x
+          findEx('x', 'xô', ['sổ', 'hồ', 'xô']),
+          // Không có dấu hỏi cạnh dấu ngã: "vẻ" và "vẽ" đều là từ; "vé" là từ nhưng không chỉ tranh
+          toneEx('🎨', 'vẽ', ['sac', 'nga', 'nang', 'huyen']),
+          listenEx('xe', ['che', 've', 'xe']),
+          findEx('v', 'vở', ['vở', 'bơ', 'đỡ']),
+          pictureEx(VA_LI_SUITCASE.emoji, 'va li', ['ca nô', 'va li', 'cà phê']),
+          // Hàng âm đầu không có s (đọc giống x) và d, gi (miền Nam đọc giống v)
+          buildEx(XE_BIKE.emoji, 'xe', ['ch', 'kh', 'v', 'x'], ['a', 'e', 'i', 'o'], ['ngang', 'huyen', 'sac', 'hoi']),
+        ],
+      },
+      {
+        number: 28,
+        slug: 'tv1-bai-28',
+        title: 'Y y',
+        mark: 'Yy',
+        description: 'Học chữ y, đánh vần quý, ý',
+        teaches: { units: ['y'], tones: [] },
+        intro: [
+          intro(
+            'Bé bấm nghe câu. Các tiếng tô màu có chữ y.',
+            scene(['🏥', '👩', '👧'], 'Cô y tá dặn bé: chú ý ăn ngủ đủ giờ nhé.', ['y', 'ý']),
+          ),
+          intro('Chữ y đọc là i dài. Bé bấm vào chữ để nghe.', letter('y')),
+          intro(
+            'Bé đánh vần: quờ, i dài, quy, sắc, quý. Y thêm dấu sắc thành ý.',
+            { kind: 'spell', steps: [...spell('qu', 'y', 'sac'), toneStep('', 'y', 'sac')] },
+          ),
+          // Chỉ một tranh: các tiếng có y rất ít tranh rõ nghĩa, và "đá quý" quá dài cho lưới hai cột của thẻ nhiều tranh
+          intro('Bé đọc từ này, rồi bấm vào tranh để nghe lại.', { kind: 'picture', emoji: DA_QUY_GEM.emoji, word: DA_QUY_GEM.word }),
+          intro(
+            'Bé tự đọc câu này, rồi bấm loa để nghe lại.',
+            { kind: 'sentence', text: 'Bà bị ho, cô y tá ghé nhà. Bé quý cô y tá.', highlight: ['y', 'quý'] },
+          ),
+        ],
+        exercises: [
+          // Không có i trong lựa chọn: y và i đọc giống nhau
+          listenEx('y', ['y', 'u', 'v']),
+          // Lựa chọn sai có i (đọc giống y), để bé nhìn đúng chữ y
+          findEx('y', 'ý', ['kí', 'ý', 'lí']),
+          // Tranh đá quý đã có ở thẻ Từ ngữ. "Quỳ", "quỷ" là từ nhưng không chỉ tranh
+          toneEx(DA_QUY_GEM.emoji, 'quý', ['huyen', 'hoi', 'sac', 'ngang']),
+          listenEx('quý', ['quế', 'quý', 'quá']),
+          findEx('y', 'quỳ', ['quỳ', 'quà', 'quê']),
+          // Hàng vần không có i: "quì" đọc giống "quỳ". Hàng âm đầu không có k để không ghép ra "kỳ"
+          buildEx(QUY_KNEEL.emoji, 'quỳ', ['c', 'ch', 'qu', 'th'], ['a', 'ê', 'o', 'y'], ['ngang', 'huyen', 'sac', 'nang']),
+        ],
+      },
+      {
+        number: 29,
+        slug: 'tv1-bai-29',
+        title: 'Luyện tập chính tả',
+        mark: 'Ck',
+        description: 'Luyện viết đúng c hay k, g hay gh, ng hay ngh',
+        teaches: { units: [], tones: [] },
+        intro: [
+          intro(
+            'Bé nhớ: k đứng trước i, e, ê, như kì đà. C đứng trước a, o, ô, ơ, u, ư, như cá.',
+            { kind: 'pictures', items: [KI_DA_LIZARD, CA_FISH] },
+          ),
+          intro(
+            'Gh đứng trước i, e, ê, như ghế. G đứng trước a, o, ô, ơ, u, ư, như gà.',
+            { kind: 'pictures', items: [GHE_CHAIR, GA_CHICKEN] },
+          ),
+          intro(
+            'Ngh đứng trước i, e, ê, như nghĩ. Ng đứng trước a, o, ô, ơ, u, ư, như ngô.',
+            { kind: 'pictures', items: [NGHI_THINK, NGO_CORN] },
+          ),
+        ],
+        // Mỗi quy tắc hai câu, một câu viết k/gh/ngh và một câu viết c/g/ng.
+        // 🪑 và 🤔 đã có ở bài 18–20 nhưng là tranh rõ nghĩa duy nhất cho gh, ngh; ở đây bé luyện cách viết
+        exercises: [
+          // Thước kẻ: bé chỉ chọn cách viết, hai lựa chọn cùng đọc là "kẻ"
+          spellingEx({ emoji: '📏', word: 'kẻ' }, 0),
+          spellingEx({ emoji: '🍅', word: 'cà chua' }, 1),
+          spellingEx(GHE_CHAIR, 1),
+          // Gà trống, khác tranh gà 🐔 của các bài trước
+          spellingEx({ emoji: '🐓', word: 'gà' }, 0),
+          spellingEx(NGHI_THINK, 0),
+          spellingEx({ emoji: '🐎', word: 'ngựa' }, 1),
+        ],
+      },
+      {
+        number: 30,
+        slug: 'tv1-bai-30',
+        title: 'Ôn tập',
+        mark: 'Ôn',
+        description: 'Ôn lại chữ ph, qu, v, x, y và cách viết c, k, g, gh, ng, ngh',
+        teaches: { units: [], tones: [] },
+        intro: [
+          intro(
+            'Bé đã học thêm năm chữ: ph, qu, v, x, y. Bé bấm để nghe lại.',
+            { kind: 'letter', letters: ['ph', 'qu', 'v', 'x', 'y'], say: ['ph', 'qu', 'v', 'x', 'y'].map(sayOf).join(', ') },
+          ),
+          intro(
+            'Bé đánh vần lại: phờ, ô, phô, sắc, phố. Vờ, e, ve, sắc, vé.',
+            { kind: 'spell', steps: [...spell('ph', 'ô', 'sac'), ...spell('v', 'e', 'sac')] },
+          ),
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [QUA_GIFT, VI_WALLET, XE_BIKE, QUY_KNEEL] }),
+          intro(
+            'Bé tự đọc câu này, rồi bấm loa để nghe lại.',
+            { kind: 'sentence', text: 'Bố đi xe chở bé ra phố. Bé mua quà về cho bà, vì bé quý bà.', highlight: [] },
+          ),
+        ],
+        // Tranh đã có ở bài 27–28 chỉ dùng lại ở dạng câu khác: 🚲 (ghép → dấu thanh), 💎 (dấu thanh → ghép)
+        exercises: [
+          listenEx('x', ['kh', 'x', 'v']),
+          pictureEx('🎫', 'vé', ['vé', 'xe', 'vẽ']),
+          findEx('ph', 'phà', ['hà', 'bà', 'phà']),
+          // Không có dấu ngã; "xé", "xẻ" là từ nhưng không chỉ tranh
+          toneEx(XE_BIKE.emoji, 'xe', ['hoi', 'sac', 'huyen', 'ngang']),
+          listenEx('quả', ['quả', 'tả', 'cả']),
+          // Hàng vần không có i ("quì" đọc giống "quý") và o (để không ghép ra tiếng không hay với ph)
+          buildEx(DA_QUY_GEM.emoji, 'quý', ['ph', 'qu', 'th', 'x'], ['a', 'e', 'ơ', 'y'], ['ngang', 'huyen', 'sac', 'nang']),
+          // Không có i trong lựa chọn: "í" đọc giống "ý"
+          listenEx('ý', ['ế', 'ý', 'á']),
+          // Một câu chính tả của bài 29, với tranh cá mới
+          spellingEx({ emoji: '🐠', word: 'cá' }, 1),
         ],
       },
     ],
