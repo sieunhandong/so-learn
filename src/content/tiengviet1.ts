@@ -1215,8 +1215,8 @@ export const tiengViet1Chapters: ReadingChapterSeed[] = [
             'Bé đánh vần: quờ, i dài, quy, sắc, quý. Y thêm dấu sắc thành ý.',
             { kind: 'spell', steps: [...spell('qu', 'y', 'sac'), toneStep('', 'y', 'sac')] },
           ),
-          // Chỉ một tranh: các tiếng có y rất ít tranh rõ nghĩa, và "đá quý" quá dài cho lưới hai cột của thẻ nhiều tranh
-          intro('Bé đọc từ này, rồi bấm vào tranh để nghe lại.', { kind: 'picture', emoji: DA_QUY_GEM.emoji, word: DA_QUY_GEM.word }),
+          // Các tiếng có y rất ít tranh rõ nghĩa, nên chỉ có hai tranh
+          intro('Bé đọc từng từ, rồi bấm vào tranh để nghe lại.', { kind: 'pictures', items: [QUY_KNEEL, DA_QUY_GEM] }),
           intro(
             'Bé tự đọc câu này, rồi bấm loa để nghe lại.',
             { kind: 'sentence', text: 'Bà bị ho, cô y tá ghé nhà. Bé quý cô y tá.', highlight: ['y', 'quý'] },
