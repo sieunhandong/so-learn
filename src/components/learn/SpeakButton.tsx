@@ -4,9 +4,11 @@ import { useSpeech } from '@/hooks/useSpeech'
 
 interface SpeakButtonProps {
   text: string
+  /** Tên nút cho trình đọc màn hình khi chưa đọc; mặc định là nghe đọc đề */
+  label?: string
 }
 
-export default function SpeakButton({ text }: SpeakButtonProps) {
+export default function SpeakButton({ text, label = 'Nghe đọc đề' }: SpeakButtonProps) {
   const { supported, speaking, speak, stop } = useSpeech()
   if (!supported) return null
 
@@ -14,7 +16,7 @@ export default function SpeakButton({ text }: SpeakButtonProps) {
     <button
       type="button"
       onClick={() => (speaking ? stop() : speak(text))}
-      aria-label={speaking ? 'Dừng đọc' : 'Nghe đọc đề'}
+      aria-label={speaking ? 'Dừng đọc' : label}
       aria-pressed={speaking}
       className={`grid size-14 shrink-0 place-items-center rounded-full bg-sun text-ink-deep shadow-[0_4px_0_0_#D9A21F] transition-transform active:translate-y-1 active:shadow-none ${speaking ? 'animate-pulse' : ''}`}
     >

@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { STARS_AFTER_RETRY, STARS_FIRST_TRY } from '@/lib/rewards'
+import SpeakButton from '@/components/learn/SpeakButton'
 import RedStamp from '@/components/ui/RedStamp'
 
 interface SolvedFeedbackProps {
@@ -34,13 +35,22 @@ export default function SolvedFeedback({ solved, firstTry, showReward, explain, 
             />
           )}
         </AnimatePresence>
+        {/* Có loa đọc lời giải và lời nhắc, vì bé lớp 1 chưa tự đọc được hết; loa nằm ngay sau chữ, chữ dài hoặc màn hẹp thì loa xuống dòng dưới */}
         {solved ? (
-          <motion.p initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="text-graphite">
-            <strong className="text-leaf">Đúng rồi! </strong>
-            {explain}
-          </motion.p>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <motion.p initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="min-w-0 text-graphite">
+              <strong className="text-leaf">Đúng rồi! </strong>
+              {explain}
+            </motion.p>
+            <SpeakButton text={explain} label="Nghe đọc lời giải" />
+          </div>
         ) : (
-          hasWrong && <p className="text-pencil">{wrongHint}</p>
+          hasWrong && (
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <p className="min-w-0 text-pencil">{wrongHint}</p>
+              <SpeakButton text={wrongHint} label="Nghe đọc lời nhắc" />
+            </div>
+          )
         )}
       </div>
 
